@@ -1,4 +1,5 @@
 const express=require('express')
+const path=require('path')
 const app=express();
 Port=3000
 const validator=require('validator')
@@ -12,6 +13,11 @@ const dotenv=require('dotenv')
 dotenv.config()
 DBCOnnection();
 
+
+const cors = require('cors');
+const { log } = require('console');
+
+app.use(cors())
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -61,6 +67,7 @@ function isValidPassword(password) {
 
 
 app.get('/',(req,res)=>{
+    console.log("val",__dirname)
     res.send("HELLO")
 })
 
@@ -69,26 +76,36 @@ app.post('/register',async (req,res)=>{
     try{
         console.log(req)
         // get all the data from request.body
-        const{firstname,lastname,email,password}=req.body
+        const{firstName,lastName,email,password}=req.body
+        console.log("firstname = ",firstName)
+        console.log("lastname = ",lastName)
+        console.log("email = ",email)
+        console.log("password = ",password)
         
         // check all the sections are filled or not
-        if(!(firstname && lastname && email && password)){
+        if(!(firstName && lastName && email && password)){
             return res.status(400).send("All the fields are required")
         }
 
         //check valid email
         if(!isValidEmail(email)){
-            return res.status(400).send("Format is incorrect");
+            return res.status(400).json({
+                message:"Format is incorrect",
+                success:false
+            
+            });
         }
 
         // check valid password
 
         if(!isValidPassword(password)){
-            return res.status(400).send("Password should consists of atleast 10 characters,atleat 1 lowerCase 1 UpperCase and 1 special character");
+            console.log('Invaid Password');
+            return res.status(400).send("Must be 10 characters or more, needs at least one number, one UpperCase letter, one LowerCase letter and one special character");
         }
         // check whether user already exist
         const existingUser=await User.findOne({email})
         if(existingUser){
+            console.log('Invaid User');
             return res.status(400).send("User already exists")
         }
 
@@ -98,8 +115,8 @@ app.post('/register',async (req,res)=>{
 
         // Store the User details and encrypted Password in database
         const newUser=await User.create({
-            firstname,
-            lastname,
+            firstName,
+            lastName,
             email,
             password:hashPassword
         })
