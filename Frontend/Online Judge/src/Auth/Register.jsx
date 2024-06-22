@@ -1,6 +1,6 @@
 import React, {useState, useRef,useEffect } from 'react'
 // import Button from './Components/Button'
-import uploadData from '../api'
+import {uploadDataRegister} from '../api'
 import {Link,redirect} from 'react-router-dom'
 
 
@@ -44,7 +44,7 @@ function Auth() {
 
         console.log(Data)
         
-        uploadData(Data).then(newResponse =>{
+        uploadDataRegister(Data).then(newResponse =>{
             // console.log('NewResponse',newResponse);
             if(!newResponse.data.success){
                 console.log("responseVal ",newResponse)
@@ -54,8 +54,8 @@ function Auth() {
                     
             }
             else{
-                // console.log('NewResponse = ',newResponse);
-                <redirect to="/login"/>
+                console.log('NewResponse = ',newResponse);
+                // <redirect to="/login"/>
                 
             }
         })

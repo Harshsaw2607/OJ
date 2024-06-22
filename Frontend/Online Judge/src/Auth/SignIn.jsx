@@ -1,6 +1,6 @@
 import React, {useState, useRef,useEffect } from 'react'
 // import Button from './Components/Button'
-import uploadDataLogIn from '../api'
+import {uploadDataLogIn } from '../api'
 import {Link} from 'react-router-dom'
 
 function Auth() {
@@ -29,7 +29,7 @@ function Auth() {
         password: passwordRef.current.value,
         };
 
-        console.log(Data);
+        console.log("Data = ",Data);
         
         uploadDataLogIn(Data).then(newResponse =>{
             if(!newResponse.success){
