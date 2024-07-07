@@ -1,5 +1,18 @@
 const mongoose=require('mongoose')
 
+const codeSchema = new mongoose.Schema({
+    id:{
+        type:String,
+        required:true
+    },
+
+    code:{
+        type:String,
+        required:true
+    }
+
+})
+
 const UserSchema=new mongoose.Schema({
     firstName:{
         type:String,
@@ -19,6 +32,11 @@ const UserSchema=new mongoose.Schema({
 
     password:{
         type:String,
+        required:true
+    },
+
+    code:{
+        type:[codeSchema],
         required:true
     }
 })

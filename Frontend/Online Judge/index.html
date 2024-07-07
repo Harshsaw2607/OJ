@@ -6,15 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Online Judge</title>
   </head>
-  <body class="bg-indigo-50 " style="#background
-  { 
-      position:absolute; 
-      height:100%; 
-      width:100%;
-      /* background-color:#9B59B6; */
-      margin: -19px 0 0 0;
-      width: 100%;
-  }">
+
+  <style>
+    body {
+      margin: 0; /* Reset default margin */
+      padding: 0; /* Reset default padding */
+      height: 100vh; /* Full height of viewport */
+      width: 100vw; /* Full width of viewport */
+      overflow: auto; /* Enable scrolling if content overflows */
+      /* background-color: #9b59b6; Set your desired background color */
+    }
+  </style>
+
+  <body class="bg-indigo-50 ">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

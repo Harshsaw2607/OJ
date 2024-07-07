@@ -2,6 +2,8 @@ import { useState } from 'react'
 import './App.css'
 // import Cards from './Components/Cards'
 import SignIn from './Auth/SignIn'
+import UserContextProvider from './Context/UserContextProvider'
+import Profile from './Profile/Profile'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -11,13 +13,10 @@ function App() {
     
   }
   return (
-    <>
-      {/* <h1 className='bg-green-400 text-black rounded-xl p-20'>Hello</h1>
-      <Cards channel="Harsh" Obj={Obj}/> */}
+    <UserContextProvider>
       <SignIn/>
-
-
-    </>
+      <Profile/>
+    </UserContextProvider>
   )
 }
 

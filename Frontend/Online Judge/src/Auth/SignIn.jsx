@@ -1,20 +1,32 @@
-import React, {useState, useRef,useEffect } from 'react'
+import React, {useState, useRef,useEffect} from 'react'
 // import Button from './Components/Button'
 import {uploadDataLogIn } from '../api'
-import {Link} from 'react-router-dom'
+import {Link,useNavigate,useLocation} from 'react-router-dom'
+import useAuth from '../Hooks/useAuth'
+import '../Components/Problems/ProblemDetails/style.css'
 
 function Auth() {
 
-    
+    const navigate= useNavigate()
     const emailRef = useRef();
     const passwordRef = useRef();
     const ButtonRef=useRef();
     const [errorMsgEmail,setErrorMsgEmail]=useState('')
     const [errorMsgPass,setErrorMsgPass]=useState('')
     const [passwordMessage, setPasswordMessage] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
+    const [popupMessage,setPopupMessage] = useState('')
     // const [clickButton,setclickButton]=useState(0)
     
-   
+   const {user,setUser}=useAuth()
+   const location=useLocation()
+   const from=location.state?.from?.pathname || '/'
+
+   console.log("location = ",location)
+
+
+//    setUser("Hello")
+   console.log("user = ",user)
     const handleSubmit = (e) => {
        e.preventDefault();
 
@@ -32,16 +44,32 @@ function Auth() {
         console.log("Data = ",Data);
         
         uploadDataLogIn(Data).then(newResponse =>{
+            console.log("responseVal ",newResponse)
             if(!newResponse.success){
-                console.log("responseVal ",newResponse)
-                if(newResponse.data==="User doesn't exist"){
-                    setErrorMsgEmail(newResponse.data)
+                if(newResponse.data.message==="User doesn't exist"){
+                    setErrorMsgEmail(newResponse.data.message)
+                }
+
+                if(newResponse.data.message==='Password is incorrect'){
+                    setErrorMsgPass(newResponse.data.message)
                 }
                     
             }
             else{
-    
+
+                console.log("New Response = ",newResponse.message)
+                setUser({email : newResponse.userExists.email, id : newResponse.userExists._id})
+                console.log("New USer = ",user)
+                Popup('Logged in Successfully')
+                setTimeout(() => {
+                    navigate(from, {replace:true})
+                },2000)
+                
+
+                
             }
+        }).catch(error => {
+            Popup("No Server Response")
         })
         
         
@@ -68,7 +96,7 @@ function Auth() {
 
     const handlePasswordChange = (e) => {
         const value = e.target.value;
-        console.log(value)
+        // console.log(value)
         // setPassword(value);
 
         // Check password criteria
@@ -83,12 +111,44 @@ function Auth() {
     const isButtonDisabled= errorMsgEmail || errorMsgPass || passwordMessage
 
 
+    useEffect(() => {
+        const externalElement = document.querySelector('#root');
+        document.body.style.display='flex';
+        document.body.style.alignItems = 'center';
+        externalElement.style.margin='auto'
+        externalElement.style.textAlign='center'
+
+        return () => {
+            document.body.style.display = '';
+            document.body.style.alignItems = '';
+            externalElement.style.margin=''
+            externalElement.style.textAlign=''
+            window.scrollTo(0, 0); // Scroll to top
+          }
+
+    },[])
+
+    const Popup = (value) => {
+        setPopupMessage(value);
+        setShowPopup(true);
+        setTimeout(() => setShowPopup(false), 2000); // Hide after 2 seconds
+    }
+
+    const PopupMessage = ({ message, show }) => {
+        return (
+          <div className={`popup ${show ? 'show' : ''}`}>
+            <p>{message}</p>
+          </div>
+        );
+      };
+
+
 
 
   return (
     <>
     <div className="h-auto w-[480px] border-black-5 shadow-xl  bg-slate-50 p-8 overflow-hidden"> 
-        <div className=' text-black font-semibold m-2 text-lg'>Online Judge</div>
+        <div className=' text-black font-semibold m-2 text-lg '>Online Judge</div>
         
         <form onSubmit={handleSubmit} className='flex-col items-center'>
             <div>
@@ -110,13 +170,13 @@ function Auth() {
                 m-0 right-12 bg-white' onClick={togglePasswordVisibility}><img src={eyeIcon} alt="Icon" className=' m-0 w-5 h-5 p-0 bg-white'/></button>
 
                 {passwordMessage && (
-                    <p className='text-red-700 mb-20 relative left-12 break-normal max-w-[300px]' style={{ fontSize: '10px' }}>
+                    <p className='text-red-700 mb-5 relative left-12 break-normal max-w-[300px]' style={{ fontSize: '10px' }}>
                     {passwordMessage}
                     </p>
                 )}
 
                 {errorMsgPass && (
-                    <p className='text-red-700 relative right-[6.4rem] bottom-[0.9rem] mb-20' style={{ fontSize: '10px' }}>
+                    <p className='text-red-700 relative right-[6.4rem] bottom-[0.9rem] mb-5' style={{ fontSize: '10px' }}>
                     {errorMsgPass}
                     </p>
                 )}
@@ -138,6 +198,8 @@ function Auth() {
             </div>
 
         </form>
+
+        {showPopup && <PopupMessage message={popupMessage} show={showPopup}/>}
 
     </div>
     </>

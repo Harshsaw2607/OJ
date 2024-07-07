@@ -1,5 +1,16 @@
 const mongoose=require('mongoose')
 
+const TestSchema = new mongoose.Schema({
+    Input : {
+        type : String,
+        required : true
+    },
+
+    Expected_Output : {
+        type : String,
+        required : true
+    }
+})
 
 const ProblemSchema=new mongoose.Schema({
     ProblemName:{
@@ -12,12 +23,16 @@ const ProblemSchema=new mongoose.Schema({
     },
     Editorial:{
         type:String,
-        required:true
+        required:false
     },
     Difficulty:{
         type:String,
         required:true
     },
+    Testcase : {
+        type :[TestSchema],
+        required : true
+    }
 
 })
 

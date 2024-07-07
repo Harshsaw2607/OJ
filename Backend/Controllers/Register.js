@@ -58,7 +58,7 @@ function isValidPassword(password) {
 
  const Register = async (req,res)=>{
     try{
-        // console.log(req)
+        console.log(req)
         // get all the data from request.body
         const{firstName,lastName,email,password}=req.body
         console.log("firstname = ",firstName)
