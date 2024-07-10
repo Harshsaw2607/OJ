@@ -81,7 +81,6 @@ function CodeEditor({testcases,id}) {
     const testCasesRef = useRef();
     const {user} = useAuth()
 
-    let LanguageUsedInCode='C++'
   
     const toggleDropdown = () => {
       setIsOpen(!isOpen);
@@ -91,7 +90,7 @@ function CodeEditor({testcases,id}) {
       
       setLanguage(e.target.innerText)
       LanguageUsedInCode=e.target.innerText
-      console.log("LanguageUsedInCode = ",LanguageUsedInCode)
+      console.log("handle Dropdown = ",language)
       setIsLanguageUpdated(true)
       setIsOpen(!isOpen)
     }
@@ -116,10 +115,10 @@ function CodeEditor({testcases,id}) {
   
     useEffect(() => {
       user && RetrieveCodeFromDatabase(id,user.id).then(response => {
-        console.log("Back data = ",response)
+        // console.log("Back data = ",response)
         if(response.data.success){
           setCode(response.data.data)
-          console.log("code = ",code)
+          // console.log("code = ",code)
         }
       }).catch(error => {
         console.log("Error while getting Code From DB = ",error)
@@ -128,11 +127,11 @@ function CodeEditor({testcases,id}) {
     }, [user])
   
   
-    const handleEditorChange = (newValue,LanguageReceived) => {
+    const handleEditorChange = (newValue) => {
       setCode(newValue);
-      console.log("language in Code = ",language)
       const lang=LanguageMap.get(language)
-      
+      console.log("language in Code = ",language, "lang = ",lang)
+
       saveCodeToDatabase(id,newValue,user.id,lang).then(response => {
   
       })
@@ -147,8 +146,8 @@ function CodeEditor({testcases,id}) {
       }
   
       else{
-        console.log("language = ",language, "code = ",code)
-        console.log("Input = ",Input)
+        // console.log("language = ",language, "code = ",code)
+        // console.log("Input = ",Input)
         setOutput('')
         setShowTestCases(true)
         setTimeout(() => {
@@ -161,12 +160,12 @@ function CodeEditor({testcases,id}) {
           }
       }, 100); 
         CompileCode(language,code,Input).then(data => {
-          console.log("data = ",data)
-            console.log("message = ",data.data.output.message)
+          // console.log("data = ",data)
+          //   console.log("message = ",data.data.output.message)
             const message=data.data.output.message
             const OutputReceived=data.data.output.output
             setOutput({message,OutputReceived})
-            console.log("Output = ",Output)
+            // console.log("Output = ",Output)
           
         
           
@@ -213,7 +212,7 @@ function CodeEditor({testcases,id}) {
           setLoading(false)
           let count=0;
           response.forEach(item => {
-            console.log("item = ",item)
+            // console.log("item = ",item)
             
             
             if(item[0] === 'A'){
@@ -245,9 +244,9 @@ function CodeEditor({testcases,id}) {
     useEffect(() => {
       if (ResultForMySubmission!=null) {
         const lang=LanguageMap.get(language)
-        console.log("ResultForMySubmission = ",ResultForMySubmission)
+        // console.log("ResultForMySubmission = ",ResultForMySubmission)
         SaveVerdictToDatabase(id, ResultForMySubmission,lang,code, user.id).then((responseBack) => {
-          console.log('ResponseBack = ', responseBack);
+          // console.log('ResponseBack = ', responseBack);
         });
 
         setResultForMySubmission(null)
@@ -280,7 +279,7 @@ function CodeEditor({testcases,id}) {
     
   
   
-    console.log("userEntered = ",user)
+    // console.log("userEntered = ",user)
     const isButtonDisabled = !user
     
 
@@ -304,10 +303,10 @@ function CodeEditor({testcases,id}) {
             {isOpen && (
               <div className="origin-top-right absolute left-0 mt-2 w-44 rounded-lg shadow-lg bg-white divide-y divide-gray-100 dark:bg-gray-700 ring-1 ring-black ring-opacity-5 z-50">
                 <div className="py-1">
-                  <li href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white" onClick={(e) => handleDropDownContent(e)}>C++</li>
-                  <li href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white" onClick={(e) => handleDropDownContent(e)} >Java</li>
-                  <li href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white" onClick={(e) => handleDropDownContent(e)}>Python</li>
-                  <li href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white" onClick={(e) => handleDropDownContent(e)}>Javascript</li>
+                  <li value = "cpp" href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white" onClick={(e) => handleDropDownContent(e)}>C++</li>
+                  <li value="java" href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white" onClick={(e) => handleDropDownContent(e)} >Java</li>
+                  <li value= "python" href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white" onClick={(e) => handleDropDownContent(e)}>Python</li>
+                  <li value = "javascript" href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white" onClick={(e) => handleDropDownContent(e)}>Javascript</li>
                 </div>
               </div>
             )}
@@ -321,7 +320,7 @@ function CodeEditor({testcases,id}) {
                   lang={LanguageMap.get(language)}
                   theme="vs-dark"
                   value={code}
-                  onChange={(newValue) => handleEditorChange(newValue,language)}
+                  onChange={(newValue) => handleEditorChange(newValue)}
                   options={{ // Optional: Additional editor options
                     wordWrap: 'on', // Enable word wrap
                     automaticLayout: true // Enable automatic layout

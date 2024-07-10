@@ -51,13 +51,13 @@ const uploadDataProblem = async (Data) => {
         return response.data
     } catch (error){
         if (axios.isAxiosError(error) && error.response) {
-            console.log("Error while creating Coding Problem ", error.response.data);
+            // console.log("Error while creating Coding Problem ", error.response.data);
             const newResponse={
                 message:error.response.data,
                 success:false
                 
             }
-            console.log(newResponse)
+            // console.log(newResponse)
             return newResponse; // You can return this to handle the error in the calling function
         } else {
             console.log("Error while creating Coding Problem ", error);
@@ -68,7 +68,7 @@ const uploadDataProblem = async (Data) => {
 const fetchDatafromDatabase = async () =>{
     try{
         const response=await axios.get(`${URL}/api/Crud/get`)
-        console.log("newData ",response.data);
+        // console.log("newData ",response.data);
         return response.data
 
     } catch (error){
@@ -80,7 +80,7 @@ const fetchDatafromDatabase = async () =>{
                     success:false
                 }
             }
-            console.log(newResponse)
+            // console.log(newResponse)
             return newResponse; // You can return this to handle the error in the calling function
         } else {
             console.log("Error while fetching data ", error);
@@ -91,7 +91,7 @@ const fetchDatafromDatabase = async () =>{
 const saveCodeToDatabase = async (id,code,userId,language) => {
     try {
         const response =await axios.put(`${URL}/api/Crud/codeUpdate/${userId}`,{code,id,language})
-        console.log("Response received while saving code to database = ",response)
+        // console.log("Response received while saving code to database = ",response)
     } catch (error) {
         console.error("Error = ",error)
     }
@@ -101,9 +101,9 @@ const saveCodeToDatabase = async (id,code,userId,language) => {
 
 const RetrieveCodeFromDatabase = async(id,userId) => {
     try {
-        console.log("id api = ",id)
+        // console.log("id api = ",id)
         const response = await axios.get(`${URL}/api/Crud/getCode/${userId}/${id}`)
-        console.log("REsponse received from server = ",response)
+        // console.log("REsponse received from server = ",response)
         return response
     } catch (error) {
         console.error("Error while retrieving code = ",error)
@@ -149,7 +149,7 @@ const fetchDatafromDatabaseUisngID = async(id) => {
     try{
 
         const response=await axios.get(`${URL}/api/Crud/problemStatement/${id}`)
-        console.log("Got Data = ",response)
+        // console.log("Got Data = ",response)
         return response
 
     } catch (error){
