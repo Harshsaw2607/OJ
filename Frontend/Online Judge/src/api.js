@@ -88,9 +88,9 @@ const fetchDatafromDatabase = async () =>{
     }
 }
 
-const saveCodeToDatabase = async (id,code,userId) => {
+const saveCodeToDatabase = async (id,code,userId,language) => {
     try {
-        const response =await axios.put(`${URL}/api/Crud/codeUpdate/${userId}`,{code,id})
+        const response =await axios.put(`${URL}/api/Crud/codeUpdate/${userId}`,{code,id,language})
         console.log("Response received while saving code to database = ",response)
     } catch (error) {
         console.error("Error = ",error)
@@ -99,14 +99,48 @@ const saveCodeToDatabase = async (id,code,userId) => {
     
 }
 
-const RetrieveCodeFromDatabase = (id,userId) => {
+const RetrieveCodeFromDatabase = async(id,userId) => {
     try {
         console.log("id api = ",id)
-        const response = axios.get(`${URL}/api/Crud/getCode/${userId}/${id}`)
+        const response = await axios.get(`${URL}/api/Crud/getCode/${userId}/${id}`)
         console.log("REsponse received from server = ",response)
         return response
     } catch (error) {
         console.error("Error while retrieving code = ",error)
+    }
+}
+
+const SaveVerdictToDatabase = async (id,verdict,language,code,userId) => {
+    try {
+        console.log("Verdict = ",verdict)
+        const response= await axios.post(`${URL}/api/Crud/saveVerdict/${userId}/${id}`,{verdict,code,language})
+        console.log("Verdict save response = ",response)
+        return response
+    } catch (error) {
+        console.log("Error while saving verdict to database = ",error)
+    }
+}
+
+
+const MySubmissionsDetails = async (userId, id) => {
+    try {
+        console.log("User id in My Submission = ",userId)
+        const response = axios.get(`${URL}/api/Crud/submissionDetails/${userId}/${id}`)
+        console.log("Submission Details = ",response)
+        return response
+    } catch (error) {
+        console.error("Error while retrieving Submission details = ",error)
+    }
+}
+
+const AllSubmissionDetails = async (id) => {
+    try {
+        console.log("Problem id in All Submission = ",id)
+        const response = await axios.get(`${URL}/api/Crud/AllSubmissionDetails/${id}`)
+        console.log("All Submission Details = ",response)
+        return response
+    } catch (error) {
+        console.error("Error while retrieving All Submission details = ",error)
     }
 }
 
@@ -206,11 +240,11 @@ const CompileCode = async (language,code,Input) => {
 }
 
 
-const CompileCodeWithHiddenTestCases = async (language,code,id) => {
+const CompileCodeWithHiddenTestCases = async (language,code,testcase) => {
     try {
         
         console.log("language = ",language)
-        const response=await axios.post(`${URLForCompiler}/submitCode`,{language,code,id})
+        const response=await axios.post(`${URLForCompiler}/submitCode`,{language,code,testcase})
         console.log("response Received = ",response)
         return response
 
@@ -230,4 +264,4 @@ const CompileCodeWithHiddenTestCases = async (language,code,id) => {
 
 export {uploadDataRegister,uploadDataLogIn,uploadDataProblem,fetchDatafromDatabase,fetchDatafromDatabaseUisngID,
         updateProblemInDatabase,deleteDatafromDatabase,CompileCode,CompileCodeWithHiddenTestCases,
-        saveCodeToDatabase, RetrieveCodeFromDatabase}
+        saveCodeToDatabase, RetrieveCodeFromDatabase,SaveVerdictToDatabase,MySubmissionsDetails,AllSubmissionDetails}

@@ -42,7 +42,7 @@ const runCpp = async (outputFilePath, inputPath) => {
         const timeoutId = setTimeout(() => {
             childProcess.kill(); // Kill the child process
             reject({ type: 'runtime', message: 'Time Limit Exceeded' });
-        }, 1000);
+        }, 2000);
 
 
         childProcess.on('exit',() => {

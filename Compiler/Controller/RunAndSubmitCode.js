@@ -1,6 +1,7 @@
 const generateFile=require('../generateFile')
 const generateInputFile=require('../generateInputFile')
 const executeCpp=require('../executeCpp')
+const executeJS = require('../executeJs')
 const Problem=require('../../Backend/models/Problem')
 
 const RunCodeFile = async (req,res) => {
@@ -30,6 +31,17 @@ const RunCodeFile = async (req,res) => {
         })
         
     }
+
+    else if(language==='Javascript'){
+        console.log("language = ",language)
+        const output= await executeJS(filePath,inputPath)
+
+        console.log("output = ",output)
+        
+        return res.status(200).json({
+            output
+        })
+    }
     
     
    } catch (error) { 
@@ -49,7 +61,7 @@ const SubmitCodeFile = async (req,res) => {
     let timeLimitExceeded = false;
 
     console.log(req.body)
-    const {language="C++",code,id} = req.body
+    const {language="C++",code,testcase} = req.body
     if(code===undefined){
         return res.status(400).json({
             message:"Empty code",
@@ -60,56 +72,77 @@ const SubmitCodeFile = async (req,res) => {
 
     try {
         const filePath= await generateFile(code,language)
-        console.log("filePath = ",filePath);
-        const ProblemData = await Problem.findById(id)
-        console.log("ProblemData = ",ProblemData)
-        const InputArray  = ProblemData.Testcase
-
-        await Promise.all(InputArray.map(async (item,index) => {
-
+        const InputArray=testcase
+        for(let i=0;i<InputArray.length;i++){
             if(timeLimitExceeded){
-                return
+                break;
             }
 
-            const inputPath= await generateInputFile(item.Input)
-            console.log("item.Input = ",item.Input)
+            const inputPath= await generateInputFile(InputArray[i].Input)
             if(language==='C++'){
-                console.log("language = ",language)
+                // console.log("language = ",language)
                 const output= await executeCpp(filePath,inputPath)
-                console.log("output = ",output)
+                // console.log("output = ",output)
                 
                 if(output.output=='Time Limit Exceeded'){{
-                    const response=`Time Limit Exceeded at testcase ${index+1}`
+                    const response=`Time Limit Exceeded at testcase ${i+1}`
                     timeLimitExceeded=true
                     result.push(response);
-                    return 
+                    break;
                 }}
 
                 if(output.message!=='Successful Submission'){
-                    const response=`${output.message} at testcase ${index+1}`
+                    const response=`${output.message} at testcase ${i+1}`
                     result.push(response);
-                    return
+                    break;
                 }
 
                 else{
-                    // console.log("output.output = ",output.output)
-                    // console.log("item.Expected_Output = ",item.Expected_Output)
-                    // console.log("output = ",output)
-                    // console.log("item = ",item)
-                    if(output.output.trim()===item.Expected_Output.trim()){
-                        const response=`Testcase ${index+1} Accepted`
+                    
+                    if(output.output.trim()===InputArray[i].Expected_Output.trim()){
+                        const response=`Accepted Testcase ${i+1}`
                         result.push(response);
-                        return 
                     }
                     else{
-                        const response=`Wrong Answer at Testcase ${index+1}`
+                        const response=`Wrong Answer at Testcase ${i+1}`
                         result.push(response);
-                        return
+                        break;
                     }
                 }
                 
             }
-        }))
+
+            else if(language==='Javascript'){
+                const output= await executeJS(filePath,inputPath)
+                if(output.output=='Time Limit Exceeded'){{
+                    const response=`Time Limit Exceeded at testcase ${i+1}`
+                    timeLimitExceeded=true
+                    result.push(response);
+                    break;
+                }}
+
+                if(output.message!=='Successful Submission'){
+                    const response=`${output.message} at testcase ${i+1}`
+                    result.push(response);
+                    break;
+                }
+
+                else{
+                    
+                    if(output.output.trim()===InputArray[i].Expected_Output.trim()){
+                        const response=`Accepted Testcase ${i+1}`
+                        result.push(response);
+                    }
+                    else{
+                        const response=`Wrong Answer at Testcase ${i+1}`
+                        result.push(response);
+                        break;
+                    }
+                }
+            }
+        }
+
+        
 
         result.map((item,index) => (
             console.log(`item at ${index+1} = `,item)
@@ -122,10 +155,10 @@ const SubmitCodeFile = async (req,res) => {
 
     } catch (error) {
         console.log("error = ",error)
-        // res.status(500).json({
-        //     message : "Error " + error.message,
-        //     success:false
-        // })
+        res.status(500).json({
+            message : "Error " + error.message,
+            success:false
+        })
     }
     
 }

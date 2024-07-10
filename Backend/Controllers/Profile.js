@@ -11,7 +11,7 @@ const Profile = (req,res) => {
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
         if (err) return res.status(401).json({ message: 'Unauthorized' });
 
-        const user = { id: decoded.id, username: decoded.email };
+        const user = { id: decoded.id, username: decoded.email, roles : decoded.roles };
         res.json({ user });
     });
 }

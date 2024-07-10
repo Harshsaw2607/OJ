@@ -25,7 +25,7 @@ const getDataFromDatabase = async (req,res) =>{
 
 const saveDataTodatabase = async (req,res) =>{
     try{
-        console.log("req = ",req)
+        // console.log("req = ",req)
         const {ProblemName,ProblemStatement,Editorial,Difficulty,Testcase} = req.body
         const existingOne= await Problem.findOne({ProblemStatement})
         if(existingOne){
@@ -55,9 +55,9 @@ const saveDataTodatabase = async (req,res) =>{
 
 const saveCodeToDatabase = async (req,res) => {
     const userId=req.params.id
-    const {id,code} = req.body
-    console.log("req.body = ",req.body)
-    console.log("uSerId = ",userId)
+    const {id,code,language} = req.body
+    // console.log("req.body = ",req.body)
+    // console.log("uSerId = ",userId)
 
     try {
         
@@ -66,9 +66,10 @@ const saveCodeToDatabase = async (req,res) => {
             const existingCode = user.code.find(c => c.id === id);
             if(existingCode){
                 existingCode.code=code
+                existingCode.Language=language
             }
             else{
-                user.code.push({ id, code });
+                user.code.push({ id, code,Language:language});
             }
 
             // Both of the below methods are correct
@@ -122,6 +123,131 @@ const getCodeFromdatabase = async (req,res) =>{
         console.error('Error retrieving code:', error);
         return res.status(500).json({ 
             message: 'Internal server error',
+            error  : error,
+            success : false
+        });
+    }
+}
+
+
+const SaveVerdictToDatabase = async (req,res) => {
+    const {userId,id} = req.params
+    const {verdict,code,language} = req.body
+    // console.log("Body = ",req.body)
+    // console.log("Verdict = ",verdict)
+    try {
+        const user = await User.findById(userId)
+        const problem = await Problem.findById(id);
+        problem.submissions.push({userId,result:verdict,code,Language:language})
+        await problem.save();
+        if(user){
+            const existingCode =  user.code.find(c => c.id === id);
+            if(existingCode){
+            
+                existingCode.Verdict.push({verdict,code,Language:language})
+                // console.log("existing Code = ",existingCode)
+                await user.save()
+                res.status(200).json({
+                    message : "Verdict Successfull Saved",
+                    success : true
+                })
+            }
+            else{
+                return res.status(400).json({
+                    message : "Verdict cannot be save as code not found",
+                    success : false
+                })
+            }
+        }
+
+
+    } catch (error) {
+        console.error('Error while saving verdict:', error);
+        return res.status(500).json({ 
+            message: 'Internal server error',
+            error  : error,
+            success : false
+        });
+    }
+}
+
+const MySubmissionsDetails = async (req,res) => {
+    const {userId,id} = req.params
+    try {
+        const user = await User.findById(userId)
+        if(user){
+            const existingCode =  user.code.find(c => c.id === id);
+            const ProblemData = await Problem.findById(id)
+            const sortedSubmissions = existingCode.Verdict.sort((a, b) => {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            if(ProblemData){
+                const result = {
+                    ProblemName : ProblemData.ProblemName,
+                    CodeDetails : sortedSubmissions
+                }
+
+                res.status(200).json({
+                    Data : result,
+                    success : true
+                })
+
+            }
+            else{
+                return res.status(404).json({ 
+                    message: 'Problem not found',
+                    success : false
+                });
+            }
+        }
+
+        else {
+            return res.status(404).json({ 
+                message: 'User not found',
+                success : false
+            });
+        }
+    } catch (error) {
+        console.error('Error while fetching submission details :', error);
+        return res.status(500).json({ 
+            message: 'Internal server error',
+            error  : error,
+            success : false
+        });
+    }
+}
+
+
+const AllSubmissionDetails = async (req,res) => {
+    const {id}=req.params
+    try {
+        const problem = await Problem.findById(id)
+        .populate({
+            path: 'submissions.userId',
+            select: 'email'
+        });
+
+        const submissionsDetails = problem.submissions.map(submission => ({
+            ...submission.toObject(),
+            ProblemName: problem.ProblemName
+        }));
+
+        const sortedSubmissions = submissionsDetails.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+
+        res.status(200).json({
+            Data : sortedSubmissions,
+            success : true
+        })
+
+    
+
+    } catch (error) {
+        console.error('Error while fetching All submission details:', error);
+        return res.status(500).json({ 
+            message: 'Internal server error',
+            error  : error,
             success : false
         });
     }
@@ -130,10 +256,10 @@ const getCodeFromdatabase = async (req,res) =>{
 
 const getProblemStatementUsingID = async(req,res) =>{
     const id=req.params.id
-    console.log("Problem ")
+    // console.log("Problem ")
 
     const ProblemData= await Problem.findById(id)
-    console.log("ProblemData = ",ProblemData)
+    // console.log("ProblemData = ",ProblemData)
     if(!ProblemData){
         return res.status(400).json({
             message:"Problem doesn't exists",
@@ -157,7 +283,7 @@ const UpdateDataonDatabase = async (req,res) =>{
     try {
         
         const originalProblemDetails= await Problem.findById(id)
-        console.log("ProblemDetails = ",originalProblemDetails)
+        // console.log("ProblemDetails = ",originalProblemDetails)
         if(!originalProblemDetails){
             return res.status(400).json({
                 message:"Problem doesn't exists",
@@ -214,5 +340,5 @@ const DeleteDatafromDatabase = async (req,res) =>{
 }
 
 module.exports={getDataFromDatabase,saveDataTodatabase,getProblemStatementUsingID,UpdateDataonDatabase,DeleteDatafromDatabase,
-                saveCodeToDatabase,getCodeFromdatabase
+                saveCodeToDatabase,getCodeFromdatabase,SaveVerdictToDatabase,MySubmissionsDetails,AllSubmissionDetails
 }

@@ -58,7 +58,7 @@ function Auth() {
             else{
 
                 console.log("New Response = ",newResponse.message)
-                setUser({email : newResponse.userExists.email, id : newResponse.userExists._id})
+                setUser({email : newResponse.userExists.email, id : newResponse.userExists._id, roles:newResponse.roles})
                 console.log("New USer = ",user)
                 Popup('Logged in Successfully')
                 setTimeout(() => {

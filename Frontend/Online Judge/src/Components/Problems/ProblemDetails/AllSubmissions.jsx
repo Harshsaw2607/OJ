@@ -3,7 +3,7 @@ import React, { useState,useEffect,useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Pagination from './Pagination';
 import useAuth from '../../../Hooks/useAuth';
-import { MySubmissionsDetails } from '../../../api';
+import { AllSubmissionDetails, MySubmissionsDetails } from '../../../api';
 import CodeViewer from './CodeViewer';
 
 
@@ -13,7 +13,7 @@ import CodeViewer from './CodeViewer';
 
 
 let rowsPerPage=11
- function MySubmissions(){
+ function AllSubmissions(){
 
   const [currentPage, setCurrentPage] = useState(1);
   const [DetailsFetchedSuccessfully, setDetailsFetchedSuccessfully] = useState(false)
@@ -29,24 +29,25 @@ let rowsPerPage=11
   const codeViewerRef = useRef()
 
   let state=useLocation()
+  // console.log("state = ",state)
   const id=state.state.id.id
   
 
   useEffect(()=> {
 
-    user && MySubmissionsDetails(user.id,id).then(response => {
+    user && AllSubmissionDetails(id).then(response => {
       if(response.data.success){
         setDetailsFetchedSuccessfully(true)
-        const VerdictArray= response.data.Data.CodeDetails
-        const Code_Language = response.data.Data.CodeDetails.Language
-        setLanguage(Code_Language)
+        const VerdictArray= response.data.Data
+        // const Code_Language = response.data.Data.CodeDetails.Language
+        // setLanguage(Code_Language)
         const Data = []
         VerdictArray.forEach((item) => {
-          console.log("item = ",item)
+          // console.log("item.code = ",item.code)
           const result ={
-            User : user.email,
-            problem : response.data.Data.ProblemName,
-            result : item.verdict,
+            User : item.userId.email,
+            problem : item.ProblemName,
+            result : item.result,
             code:item.code,
             language:item.Language
             
@@ -90,7 +91,7 @@ let rowsPerPage=11
   return (
     <>
     {DetailsFetchedSuccessfully && <div className='relative top-[50px] left-[120px]'>
-      <div className='font-bold relative text-center mb-5 text-xl'>My Submission</div>
+      <div className='font-bold relative text-center mb-5 text-xl'>All Submission</div>
       <div className="overflow-x-auto ">
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
@@ -115,7 +116,7 @@ let rowsPerPage=11
                   <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-800 bg-opacity-10 flex justify-center">
                     <div ref={codeViewerRef} className='h-[38rem] w-[45rem] bg-blue-100 rounded-md z-10  absolute p-2 top-[80px] text-left'>
                     <div className='float-end'><img src="/cross.png" alt=""  className='h-5 w-5 cursor-pointer' onClick={() => setShowCodePage(!showCodePage)}/></div>
-                      <CodeViewer code={selectedCode} language={language}/>
+                      <CodeViewer code={selectedCode} language={row.language}/>
                     </div>
                   </div>
                 )}
@@ -140,4 +141,4 @@ let rowsPerPage=11
   );
 };
 
-export default MySubmissions;
+export default AllSubmissions;

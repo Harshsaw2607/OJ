@@ -1,5 +1,29 @@
 const mongoose=require('mongoose')
 
+const User = require('./User')
+
+const SubmissionSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    result: {
+        type:String,
+        required:false
+    } ,
+    code:{
+        type:String,
+        required:false
+    },
+    Language:{
+        type:String,
+        required:false
+    } // Example: The code submitted by the user
+    // Add more fields as needed
+}, { timestamps: true });
+
+
 const TestSchema = new mongoose.Schema({
     Input : {
         type : String,
@@ -32,7 +56,13 @@ const ProblemSchema=new mongoose.Schema({
     Testcase : {
         type :[TestSchema],
         required : true
+    },
+
+    submissions: {
+        type :[SubmissionSchema],
+        required : false
     }
+
 
 })
 

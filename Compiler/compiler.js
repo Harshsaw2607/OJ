@@ -1,10 +1,7 @@
 const express=require('express')
 const app=express()
-const {DBCOnnection} =require('../Backend/database/db')
 const cors=require('cors')
 Port=8000
-
-DBCOnnection()
 
 const CompilerRouter = require('./Routers/CompilerRouter')
 

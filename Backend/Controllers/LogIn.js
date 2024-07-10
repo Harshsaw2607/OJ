@@ -9,6 +9,7 @@ const User=require('../models/User.js');
 const { default: mongoose } = require('mongoose');
 const dotenv=require('dotenv')
 dotenv.config()
+const UserRoles = require('./UserRoles.json')
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -74,8 +75,17 @@ const LogIn = async (req,res) =>{
         }
 
         userExists.password=undefined
+        let roles
+        const foundUser = UserRoles.find(person => person.username === email)
+        if(foundUser){
+            console.log("foundUser = ",foundUser)
+            roles=Object.values(foundUser.roles)
+        }
+        else{
+            roles=[2001]
+        }
 
-        const token=jwt.sign({id:userExists._id,email},process.env.SECRET_KEY,{
+        const token=jwt.sign({id:userExists._id,email,roles},process.env.SECRET_KEY,{
             expiresIn : "1d"
         })
 
@@ -86,7 +96,8 @@ const LogIn = async (req,res) =>{
             message:"You have successfully Logged in",
             success : true,
             userExists,
-            token
+            token,
+            roles
         })
     }catch (error) {
         console.log(error);

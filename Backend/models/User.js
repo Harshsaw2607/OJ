@@ -1,5 +1,19 @@
 const mongoose=require('mongoose')
+const verdictSchema = new mongoose.Schema({
+    verdict:{
+        type:String,
+        required:false
+    },
+    code:{
+        type:String,
+        required:false 
+    },
+    Language:{
+        type:String,
+        required:false 
+    }
 
+},{ timestamps: true })
 const codeSchema = new mongoose.Schema({
     id:{
         type:String,
@@ -9,7 +23,18 @@ const codeSchema = new mongoose.Schema({
     code:{
         type:String,
         required:true
+    },
+
+    Verdict:{
+        type:[verdictSchema],
+        required:false
+    },
+
+    Language:{
+        type:String,
+        required:false
     }
+
 
 })
 

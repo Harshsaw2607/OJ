@@ -56,6 +56,13 @@ const generateFile =  async(code,language) =>{
         }
         const userCodeId=uuid()
         const filename=`${userCodeId}.js`
+        const filePath=path.join(javaScriptPath,filename)
+
+         fs.writeFileSync(filePath,code)
+         
+
+         return filePath
+
 
     }
 
