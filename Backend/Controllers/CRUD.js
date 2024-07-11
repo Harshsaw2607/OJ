@@ -107,8 +107,12 @@ const getCodeFromdatabase = async (req,res) =>{
         if(user){
             const existingCode = user.code.find(c => c.id === id);
             if(existingCode){
+                const result = {
+                    code: existingCode.code,
+                    Language : existingCode.Language
+                }
                 res.status(200).json({
-                    data : existingCode.code,
+                    data : result,
                     success: true
                 })
             }
@@ -178,10 +182,11 @@ const MySubmissionsDetails = async (req,res) => {
         if(user){
             const existingCode =  user.code.find(c => c.id === id);
             const ProblemData = await Problem.findById(id)
-            const sortedSubmissions = existingCode.Verdict.sort((a, b) => {
-                return new Date(b.createdAt) - new Date(a.createdAt);
-            });
-            if(ProblemData){
+            
+            if(existingCode){
+                const sortedSubmissions = existingCode.Verdict.sort((a, b) => {
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
                 const result = {
                     ProblemName : ProblemData.ProblemName,
                     CodeDetails : sortedSubmissions
@@ -195,7 +200,7 @@ const MySubmissionsDetails = async (req,res) => {
             }
             else{
                 return res.status(404).json({ 
-                    message: 'Problem not found',
+                    message: 'Code not found',
                     success : false
                 });
             }

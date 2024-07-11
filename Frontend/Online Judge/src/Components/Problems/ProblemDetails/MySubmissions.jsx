@@ -12,7 +12,7 @@ import CodeViewer from './CodeViewer';
 
 
 
-let rowsPerPage=11
+let rowsPerPage=10
  function MySubmissions(){
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,7 +35,9 @@ let rowsPerPage=11
   useEffect(()=> {
 
     user && MySubmissionsDetails(user.id,id).then(response => {
+      console.log("Response in MySubmission = ",response)
       if(response.data.success){
+        // console.log("Response in MySubmission = ",response)
         setDetailsFetchedSuccessfully(true)
         const VerdictArray= response.data.Data.CodeDetails
         const Code_Language = response.data.Data.CodeDetails.Language
@@ -58,7 +60,11 @@ let rowsPerPage=11
         data=Data
 
       }
+      else{
+        setDetailsFetchedSuccessfully(true)
+      }
     })
+    
 
 
   },[user])
@@ -115,7 +121,7 @@ let rowsPerPage=11
                   <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-800 bg-opacity-10 flex justify-center">
                     <div ref={codeViewerRef} className='h-[38rem] w-[45rem] bg-blue-100 rounded-md z-10  absolute p-2 top-[80px] text-left'>
                     <div className='float-end'><img src="/cross.png" alt=""  className='h-5 w-5 cursor-pointer' onClick={() => setShowCodePage(!showCodePage)}/></div>
-                      <CodeViewer code={selectedCode} language={language}/>
+                      <CodeViewer code={selectedCode} language={row.language}/>
                     </div>
                   </div>
                 )}

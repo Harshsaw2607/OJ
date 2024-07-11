@@ -1,6 +1,6 @@
 import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Choose a theme
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const CodeViewer = ({ code, language }) => {
   const options = {
@@ -26,14 +26,14 @@ const CodeViewer = ({ code, language }) => {
       fontSize: '14px', // Adjust the font size here
       height: '100%', // Ensure pre element takes full height
       margin: 0, // Remove default margin
-      position : 'relative',
-      top : "25px",
-      left : "10px"
+      position: 'relative',
+      top: "25px",
+      left: "10px"
     },
     'code[class*="language-"]': {
       ...vscDarkPlus['code[class*="language-"]'],
       fontSize: '14px', // Adjust the font size here
-      
+
     },
   };
 

@@ -38,6 +38,12 @@ const generateFile =  async(code,language) =>{
         }
         const userCodeId=uuid()
         const filename=`${userCodeId}.java`
+        const filePath=path.join(javaPath,filename)
+
+         fs.writeFileSync(filePath,code)
+         
+
+         return filePath
     }
 
     else if(language==='Python'){
@@ -47,6 +53,12 @@ const generateFile =  async(code,language) =>{
         }
         const userCodeId=uuid()
         const filename=`${userCodeId}.py`
+        const filePath=path.join(pythonPath,filename)
+
+         fs.writeFileSync(filePath,code)
+         
+
+         return filePath
     }
 
     else if(language==='Javascript'){

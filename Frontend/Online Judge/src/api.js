@@ -125,11 +125,22 @@ const SaveVerdictToDatabase = async (id,verdict,language,code,userId) => {
 const MySubmissionsDetails = async (userId, id) => {
     try {
         console.log("User id in My Submission = ",userId)
-        const response = axios.get(`${URL}/api/Crud/submissionDetails/${userId}/${id}`)
+        const response = await axios.get(`${URL}/api/Crud/submissionDetails/${userId}/${id}`)
         console.log("Submission Details = ",response)
         return response
     } catch (error) {
         console.error("Error while retrieving Submission details = ",error)
+        if (axios.isAxiosError(error) && error.response) {
+            console.log("Error while Fetching Submission Details ", error.response.data);
+            const newResponse={
+                data:error.response.data
+               
+            }
+            console.log(newResponse)
+            return newResponse; // You can return this to handle the error in the calling function
+        } else {
+            console.log("Error while Uploading Data ", error);
+        }
     }
 }
 
@@ -250,11 +261,21 @@ const CompileCodeWithHiddenTestCases = async (language,code,testcase) => {
 
 
     } catch (error) {
-        console.log("error = ",error)
-        console.log("error response = ",error.response.data.success)
-        const response=error.response
 
-        return response
+        console.error("Error while Submitting code = ",error)
+        if (axios.isAxiosError(error) && error.response) {
+            console.log("Error while Fetching Submission Details ", error.response.data);
+            const response=error.response
+            console.log(response)
+            return response; // You can return this to handle the error in the calling function
+        } else {
+            console.log("Error while Uploading Data ", error);
+        }
+        // console.log("errors = ",error)
+        // console.log("error response = ",error.response.data.success)
+        // const response=error.response
+
+        
     }
 
 }
