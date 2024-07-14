@@ -74,7 +74,7 @@ function ProblemSet() {
   };
 
   return (
-    <div className="container mx-auto mt-10 p-4 ml-10">
+    <div className="container w-[80%] mx-auto mt-10 p-4 ml-10">
       <div className="flex justify-center mb-4">
         <h2 className="text-2xl font-bold">Problems</h2>
       </div>
@@ -110,8 +110,8 @@ function ProblemSet() {
           <li
             onClick={handleNextPage}
             className={`cursor-pointer px-3 py-1 rounded-full ${currentPage === Math.ceil(problems.length / problemsPerPage)
-                ? 'bg-gray-200 text-gray-600 pointer-events-none'
-                : 'bg-gray-300 text-gray-800'
+              ? 'bg-gray-200 text-gray-600 pointer-events-none'
+              : 'bg-gray-300 text-gray-800'
               }`}
           >
             Next

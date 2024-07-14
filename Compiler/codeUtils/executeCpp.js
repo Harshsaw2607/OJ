@@ -8,12 +8,12 @@ if(!fs.existsSync(outputPath)){
     fs.mkdirSync(outputPath,{recursive:true})
 }
 
+const isWindows = process.platform === 'win32';
 
 const compileCpp = async (filePath) => {
     const fileID = path.basename(filePath).split('.')[0];
-    const outputFilename = `${fileID}.out`;
+    const outputFilename = isWindows ? `${fileID}.exe` : `${fileID}.out`;
     const outputFilePath = path.join(outputPath, outputFilename);
-    console.log("outputFilePath = ", outputFilePath);
 
     return new Promise((resolve, reject) => {
         exec(`g++ ${filePath} -o ${outputFilePath}`, (error, stdout, stderr) => {

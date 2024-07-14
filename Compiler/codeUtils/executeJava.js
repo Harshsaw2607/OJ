@@ -11,7 +11,6 @@ if (!fs.existsSync(outputPath)) {
 const compileJava = async (filePath) => {
     const fileID = path.basename(filePath).split('.')[0];
     const outputDir = path.join(outputPath, fileID);
-    console.log('outputDir = ', outputDir);
 
     return new Promise((resolve, reject) => {
         exec(`javac ${filePath} -d ${outputDir}`, (error, stdout, stderr) => {

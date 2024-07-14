@@ -11,7 +11,6 @@ if (!fs.existsSync(outputPath)) {
 const runJavaScript = async (filePath, inputPath) => {
     return new Promise((resolve, reject) => {
         const inputContent = fs.readFileSync(inputPath, 'utf8');
-        console.log("InputContent = ",inputContent)
         const command = `node ${filePath}`;
 
         const childProcess = exec(command, (error, stdout, stderr) => {

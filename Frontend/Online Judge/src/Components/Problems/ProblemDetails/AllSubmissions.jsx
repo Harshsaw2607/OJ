@@ -82,10 +82,10 @@ function AllSubmissions() {
 
   return (
     <>
-      {DetailsFetchedSuccessfully && <div className='relative top-[50px] left-[120px]'>
+      {DetailsFetchedSuccessfully && <div className='relative top-[50px] flex flex-col justify-center items-center'>
         <div className='font-bold relative text-center mb-5 text-xl'>All Submission</div>
         <div className="overflow-x-auto ">
-          <table className="min-w-full bg-white border border-gray-300">
+          <table className="bg-white border border-gray-300">
             <thead>
               <tr className="w-full bg-gray-100 text-gray-800">
                 <th className="px-4 py-2 border">User</th>
@@ -98,10 +98,10 @@ function AllSubmissions() {
             <tbody>
               {currentRows.map((row, index) => (
                 <tr key={index} className={`text-center`}>
-                  <td className="px-4 py-2 border">{row.User}</td>
-                  <td className="px-4 py-2 border">{row.problem}</td>
-                  <td className="px-4 py-2 border">{row.language}</td>
-                  <td className={`px-4 py-2 border ${row.result[0] === 'A' ? 'text-green-500' : 'text-red-500'}`}>{row.result}</td>
+                  <td className="px-6 py-2 border">{row.User}</td>
+                  <td className="px-6 py-2 border">{row.problem}</td>
+                  <td className="px-6 py-2 border">{row.language}</td>
+                  <td className={`px-6 py-2 border ${row.result[0] === 'A' ? 'text-green-500' : 'text-red-500'}`}>{row.result}</td>
                   <td className="px-5 py-2 border w-[5rem] ">
                     <img src="/code.png" alt="" className='h-[30px] w-[30px] cursor-pointer' onClick={() => handleViewCode(row.code)} />
                     {showCodePage && (

@@ -9,6 +9,7 @@ const User=require('../models/User.js');
 const { default: mongoose } = require('mongoose');
 const dotenv=require('dotenv')
 dotenv.config()
+const UserRoles = require('./UserRoles.json')
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -58,13 +59,8 @@ function isValidPassword(password) {
 
  const Register = async (req,res)=>{
     try{
-        console.log(req)
         // get all the data from request.body
         const{firstName,lastName,email,password}=req.body
-        console.log("firstname = ",firstName)
-        console.log("lastname = ",lastName)
-        console.log("email = ",email)
-        console.log("password = ",password)
         
         // check all the sections are filled or not
         if(!(firstName && lastName && email && password)){
@@ -95,7 +91,6 @@ function isValidPassword(password) {
 
         // encrypt the password
         const hashPassword = await bcrypt.hashSync(password, 10);
-        console.log(hashPassword)
 
         // Store the User details and encrypted Password in database
         const newUser=await User.create({
@@ -104,8 +99,18 @@ function isValidPassword(password) {
             email,
             password:hashPassword
         })
+
+        let roles
+        const foundUser = UserRoles.find(person => person.username === email)
+        if(foundUser){
+            roles=Object.values(foundUser.roles)
+        }
+        else{
+            roles=[2001]
+        }
+
         // Generate a JWT token and store it in Browser's cookie
-        const token=jwt.sign({id:newUser._id,email},process.env.SECRET_KEY,{
+        const token=jwt.sign({id:newUser._id,email,roles},process.env.SECRET_KEY,{
             expiresIn:"1d"
         })
 
@@ -120,12 +125,14 @@ function isValidPassword(password) {
         res.status(201).cookie("token",token,{
             expires : new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
             httpOnly: true,
+            secure: true,
             sameSite: 'None'
         }).json({
             message:"You have successfully registered",
             success : true,
             newUser,
-            token
+            token,
+            roles
         })
 
 

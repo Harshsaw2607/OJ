@@ -80,6 +80,8 @@ function CodeEditor({ testcases, id }) {
   const [hoverMessageforSubmit, setHoverMessageforSubmit] = useState(false)
   const [passCount, setPassCount] = useState(0)
   const [ResultForMySubmission, setResultForMySubmission] = useState(null)
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage,setPopupMessage] = useState('')
   const testCasesRef = useRef();
   const { user } = useAuth()
 
@@ -89,7 +91,7 @@ function CodeEditor({ testcases, id }) {
   useEffect(() => {
     languageRef.current = language;
     localStorage.setItem('selectedLanguage', language);
-    saveCodeToDatabase(id, code, user.id, language).then(response => {
+    user && code.length && saveCodeToDatabase(id, code, user.id, language).then(response => {
 
     })
   }, [language]);
@@ -98,7 +100,7 @@ function CodeEditor({ testcases, id }) {
     if (loading) {
       const timer = setTimeout(() => {
         setLoadingTimeOut(false);
-      }, 2000); // 2 seconds
+      }, 10000); // 10 seconds
 
       // Clean up the timer when the component unmounts or when loading changes
       return () => clearTimeout(timer);
@@ -119,6 +121,9 @@ function CodeEditor({ testcases, id }) {
 
   const toggleTestCases = () => {
     setShowTestCases(!showTestCases);
+    setShowInput(true)
+    setShowOutput(false)
+    setShowVerdict(false)
     setTimeout(() => {
       if (testCasesRef.current) {
         testCasesRef.current.scrollIntoView({
@@ -137,6 +142,7 @@ function CodeEditor({ testcases, id }) {
 
   useEffect(() => {
     user && RetrieveCodeFromDatabase(id, user.id).then(response => {
+      console.log("response = ",response)
       if (response.data.success) {
         setCode(response.data.data.code)
       }
@@ -193,6 +199,7 @@ function CodeEditor({ testcases, id }) {
     }
 
     else {
+      setLoadingTimeOut(true)
       setIsSubmitted(false)
       setVerdict('')
       setLoading(true)
@@ -276,11 +283,25 @@ function CodeEditor({ testcases, id }) {
     setShowVerdict(true)
   }
 
+  const PopupMessage = ({ message, show }) => {
+    return (
+      <div className={`popup ${show ? 'show' : ''}`}>
+        <p>{message}</p>
+      </div>
+    );
+  };
+
+  const Popup = (value) => {
+    setPopupMessage(value);
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 2000); // Hide after 2 seconds
+  }
+
   const isButtonDisabled = !user
 
   return (
     <div>
-      <div className=' bg-white border-2 px-4 py-8 w-[800px] max-h-[675px] overflow-auto z-10'>
+      <div className=' bg-white border-2 px-4 py-8 max-w-full max-h-[675px] overflow-auto z-10'>
         <div className="relative inline-block text-left">
           {/* Dropdown button */}
           <button
@@ -350,7 +371,7 @@ function CodeEditor({ testcases, id }) {
         </div>
 
         {showTestCases && (
-          <div ref={testCasesRef} className=" border-2 px-4 py-4 w-full  h-[220px] mt-4 bg-slate-500  ">
+          <div ref={testCasesRef} className=" border-2 px-4 py-4 w-full  h-[220px] mt-4 bg-slate-500   ">
             <div className="tab mb-4 ">
               <button className="tablinks mr-2 bg-slate-300 outline-none focus:outline-none focus:border-none hover:border-transparent" onClick={handleShowInput} >Input</button>
               <button className="tablinks mr-2 bg-slate-300 focus:outline-none focus:border-none hover:border-transparent" onClick={handleShowOutput} >Output</button>
@@ -406,7 +427,9 @@ function CodeEditor({ testcases, id }) {
         )}
 
       </div>
-      
+
+        {showPopup && <PopupMessage message={popupMessage} show={showPopup}/>}
+
     </div>
   )
 }

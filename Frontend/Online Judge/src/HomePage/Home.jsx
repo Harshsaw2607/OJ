@@ -1,20 +1,15 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function Home() {
 
   useEffect(() => {
     const externalElement = document.querySelector('#root');
-    externalElement.style.padding=0;
-    // return () => {
-    //     externalElement.style.padding=''
-    //     // window.scrollTo(0, 0); // Scroll to top
-    //   }
-    
-},[])
+    externalElement.style.padding = 0;
+  }, [])
 
   return (
-    <div className="bg-gray-100 min-h-screen min-w-[100vw] overflow-x-hidden">
+    <div className="bg-gray-100 min-h-screen min-w-[98vw] overflow-x-hidden">
       {/* Hero Section */}
       <section className="py-20 bg-blue-900 text-white w-full">
         <div className="container mx-auto px-4">

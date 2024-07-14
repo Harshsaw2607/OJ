@@ -63,6 +63,10 @@ const LogIn = async (req,res) =>{
             return res.status(401).send("All fields are required")
         }
 
+        if(!isValidEmail(email)){
+            return res.status(400).send("Format is incorrect");
+        }
+
         const userExists=await User.findOne({email})
         if(!userExists){
             return res.status(400).send("User doesn't exist")
@@ -78,7 +82,6 @@ const LogIn = async (req,res) =>{
         let roles
         const foundUser = UserRoles.find(person => person.username === email)
         if(foundUser){
-            console.log("foundUser = ",foundUser)
             roles=Object.values(foundUser.roles)
         }
         else{
@@ -91,7 +94,9 @@ const LogIn = async (req,res) =>{
 
         res.status(201).cookie("token",token,{
             expires : new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
-            httpOnly: true
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
         }).json({
             message:"You have successfully Logged in",
             success : true,
