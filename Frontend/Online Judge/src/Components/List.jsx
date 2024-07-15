@@ -10,7 +10,7 @@ function List({ ProblemName, Difficulty, id }) {
         </Link>
       </td>
       <td className={`px-6 py-3 whitespace-nowrap ${Difficulty==='Hard' ? 'text-red-600' : Difficulty==='Easy' ? 'text-green-600' 
-        : Difficulty==='Medium' ? 'bg-yellow-600' : '' } `}>{Difficulty}</td>
+        : Difficulty==='Medium' ? 'text-yellow-600' : '' } `}>{Difficulty}</td>
     </tr>
     
   );

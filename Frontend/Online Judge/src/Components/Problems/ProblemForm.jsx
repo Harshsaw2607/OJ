@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import React, { useState, useEffect } from 'react';
+import { useNavigate,useLocation } from 'react-router-dom';
 import DifficultyAndEditorial from '../DifficultyAndEditorial'
 import { uploadDataProblem } from '../../api';
 
@@ -22,6 +23,10 @@ function ProblemForm() {
     const [AddButtonVisibility, setAddButtonVisibility] = useState('')
     const [indexForEditingTestCaseContent, setIndexForEditingTestCaseContent] = useState(null)
 
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || '/'
+
     const TestCaseData = []
 
     const handleSubmit = (e) => {
@@ -38,14 +43,14 @@ function ProblemForm() {
         uploadDataProblem(Data).then(response => {
             // console.log("New Response ",response)
             if (response.success) {
-                console.log("New Problem data ", response.message)
-
                 Popup("Updated Successfully")
+                setTimeout(() => {
+                    navigate(from, { replace: true })
+                }, 2000)
 
             }
 
             else {
-                console.log("response message got = ", response.message)
                 Popup(response.message)
             }
 
@@ -83,8 +88,8 @@ function ProblemForm() {
         setPopupMessage(value);
         setShowPopup(true);
         setTimeout(() => {
-            setShowPopup(false),
-            window.location.reload()
+            setShowPopup(false)
+            // window.location.reload()
         }, 2000); // Hide after 2 seconds
     }
 

@@ -1,8 +1,8 @@
 import axios from 'axios'
-const URL = "http://15.207.47.162:3000"
-const URLForCompiler = "http://15.207.47.162:8000"
-// const URL = "http://localhost:3000"
-// const URLForCompiler = "http://localhost:8000"
+// const URL = "http://15.207.47.162:3000"
+// const URLForCompiler = "http://15.207.47.162:8000"
+const URL = "http://localhost:3000"
+const URLForCompiler = "http://localhost:8000"
 const uploadDataRegister = async (Data) => {
     try {
         const response = await axios.post(`${URL}/api/auth/register`, Data, { withCredentials: true })

@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from 'react'
 import { NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../Hooks/useAuth'
 import axios from 'axios'
-const URL = "http://15.207.47.162:3000"
-// const URL = "http://localhost:3000"
+// const URL = "http://15.207.47.162:3000"
+const URL = "http://localhost:3000"
 function NavBar() {
   const location = useLocation()
   const [showUser, setShowUser] = useState(false)
@@ -84,7 +84,7 @@ function NavBar() {
           {/* <li> <NavLink to={`/about`} className={({ isActive }) => ` ${isActive ? "text-orange-400   p-1 text-center" : "text-gray-500"}    cursor-pointer `}>About</NavLink></li> */}
           <li> <NavLink to={'/contest'} className={({ isActive }) => ` ${isActive ? "text-orange-400   p-1 text-center" : "text-gray-500"}  cursor-pointer `}>Contest</NavLink></li>
           <li><NavLink to={'/problemSet'} className={({ isActive }) => ` ${isActive ? "text-orange-400  p-1 text-center" : "text-gray-500"}  cursor-pointer `}>Problemset</NavLink></li>
-          <li><NavLink to={'/problemForm'} className={({ isActive }) => ` ${isActive ? "text-orange-400  p-1 text-center" : "text-gray-500"}  cursor-pointer ${isAdmin ? 'block' : 'hidden'}  `}>Add Problem</NavLink></li>
+          <li><NavLink to={'/problemForm'} state={{ from: location }} replace className={({ isActive }) => ` ${isActive ? "text-orange-400  p-1 text-center" : "text-gray-500"}  cursor-pointer ${isAdmin ? 'block' : 'hidden'}  `}>Add Problem</NavLink></li>
         </ul>
       </div>
 
