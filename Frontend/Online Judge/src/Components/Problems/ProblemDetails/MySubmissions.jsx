@@ -12,7 +12,7 @@ let data = []
 
 
 
-let rowsPerPage = 10
+let rowsPerPage = 15
 function MySubmissions() {
 
   const [currentPage, setCurrentPage] = useState(1);
