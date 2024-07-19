@@ -59,6 +59,10 @@ function Auth() {
                     setErrorMsgEmail(newResponse.data)
                 }
 
+                if (newResponse.data.message === "Format is incorrect") {
+                    setErrorMsgEmail(newResponse.data.message)
+                }
+
             }
             else {
                 setUser({ email: newResponse.data.newUser.email, id: newResponse.data.newUser._id, roles: newResponse.data.roles })
@@ -176,7 +180,7 @@ function Auth() {
 
                     <div>
                         <label htmlFor="email"></label>
-                        <input type="email" ref={emailRef} name="email" id="email" placeholder='Email'
+                        <input type="text" ref={emailRef} name="email" id="email" placeholder='Email'
                             className=" outline-none border-[1px] border-slate-200 rounded-md m-4 p-2" style={{ width: '300px' }}
                             onFocus={() => setErrorMsgEmail('')} />
                     </div>
