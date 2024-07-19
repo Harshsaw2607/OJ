@@ -79,6 +79,7 @@ const LogIn = async (req,res) =>{
         }
 
         userExists.password=undefined
+        userExists.code=undefined
         let roles
         const foundUser = UserRoles.find(person => person.username === email)
         if(foundUser){
