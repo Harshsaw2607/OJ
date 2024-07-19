@@ -5,7 +5,11 @@ Port=8000
 
 const CompilerRouter = require('./Routers/CompilerRouter')
 
-app.use(cors({origin:"http://localhost:5173",credentials:true}))
+app.use(cors({origin:"http://localhost:5173",
+    credentials:true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Authorization'
+}))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
