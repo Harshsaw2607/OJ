@@ -17,7 +17,7 @@ function Auth() {
 
     const { user, setUser } = useAuth()
     const location = useLocation()
-    const from = location.state?.from?.pathname || '/'
+    let from = location.state?.from?.pathname || '/'
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -52,6 +52,9 @@ function Auth() {
             else {
                 setUser({ email: newResponse.userExists.email, id: newResponse.userExists._id, roles: newResponse.roles })
                 Popup('Logged in Successfully')
+                if (from.includes('Editorial')) {
+                    from = from.replace('Editorial', 'problemDetails')
+                  }
                 setTimeout(() => {
                     navigate(from, { replace: true })
                 }, 2000)
