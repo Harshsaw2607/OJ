@@ -38,7 +38,7 @@ const Pagination = ({ totalRows, rowsPerPage, currentPage, setCurrentPage }) => 
   };
 
   return (
-    <div className="flex justify-center space-x-2 mt-4">
+    <div className="flex justify-center space-x-2 mt-4 mb-4">
       <button
         className={`px-2 py-1 border-none outline-none hover:border-none hover:outline-none ${currentPage === 1 ? 'text-gray-400' : 'text-blue-500'}`}
         onClick={() => handleClick(currentPage - 1)}
