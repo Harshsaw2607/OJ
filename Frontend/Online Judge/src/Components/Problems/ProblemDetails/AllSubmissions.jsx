@@ -8,7 +8,7 @@ import CodeViewer from './CodeViewer';
 // Table data to show Submission results
 let data = []
 
-let rowsPerPage = 10
+let rowsPerPage = 15
 function AllSubmissions() {
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -134,3 +134,4 @@ function AllSubmissions() {
 };
 
 export default AllSubmissions;
+
