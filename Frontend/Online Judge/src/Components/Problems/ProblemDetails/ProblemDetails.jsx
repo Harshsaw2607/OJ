@@ -185,7 +185,7 @@ function ProblemDetails() {
         </div>
 
         <h1 className="text-2xl font-bold mb-4">{problemName}</h1>
-        <p className={`text-sm font-semibold text-gray-600 mb-2 border-2 w-12 text-center bg-slate-300 rounded-md ${colorClass}`}>{Difficulty}</p>
+        <p className={`inline-block text-sm font-semibold text-gray-600 mb-2 border-2 px-[4px] py-[2px] text-center bg-slate-300 rounded-md ${colorClass}`}>{Difficulty}</p>
         <div className=" mb-4 whitespace-pre-wrap">{problemDetails}</div>
 
       </div>
