@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom';
 import { saveCodeToDatabase, RetrieveCodeFromDatabase, SaveVerdictToDatabase } from '../../../api'
 import { CompileCode, CompileCodeWithHiddenTestCases } from '../../../api';
 import ScaleLoader from 'react-spinners/ScaleLoader'
@@ -58,22 +57,18 @@ loader.init().then(/* ... */);
 
 function CodeEditor({ testcases, id }) {
 
-  const [IndexAtWhichTestCaseFailed, setIndexAtWhichTestCaseFailed] = useState(0)
   const [OutPutReceivedForFailedTestcase, setOutPutReceivedForFailedTestcase] = useState('')
   const [showTestCases, setShowTestCases] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem('selectedLanguage') || 'C++';
   });
-  const [isLanguageUpdated, setIsLanguageUpdated] = useState(false)
   const [code, setCode] = useState('');
   const [Output, setOutput] = useState('')
   const [Input, setInput] = useState('')
   const [Verdict, setVerdict] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [showInput, setShowInput] = useState(true)
-  const [showOutput, setShowOutput] = useState(false)
-  const [showVerdict, setShowVerdict] = useState(false)
+  const [activeTab,setActiveTab]  = useState('input')
   const [loading, setLoading] = useState(false)
   const [loadingTimeOut, setLoadingTimeOut] = useState(true)
   const [hoverMessageforRun, setHoverMessageforRun] = useState(false)
@@ -115,15 +110,12 @@ function CodeEditor({ testcases, id }) {
   const handleDropDownContent = (e) => {
 
     setLanguage(e.target.innerText)
-    setIsLanguageUpdated(true)
     setIsOpen(!isOpen)
   }
 
   const toggleTestCases = () => {
     setShowTestCases(!showTestCases);
-    setShowInput(true)
-    setShowOutput(false)
-    setShowVerdict(false)
+    setActiveTab('input')
     setTimeout(() => {
       if (testCasesRef.current) {
         testCasesRef.current.scrollIntoView({
@@ -135,9 +127,6 @@ function CodeEditor({ testcases, id }) {
     }, 100);
 
   };
-
-
-
 
 
   useEffect(() => {
@@ -184,9 +173,7 @@ function CodeEditor({ testcases, id }) {
         const message = data.data.output.message
         const OutputReceived = data.data.output.output
         setOutput({ message, OutputReceived })
-        setShowOutput(true)
-        setShowInput(false)
-        setShowVerdict(false)
+        setActiveTab('output')
       })
     }
 
@@ -204,10 +191,7 @@ function CodeEditor({ testcases, id }) {
       setVerdict('')
       setLoading(true)
       setShowTestCases(true)
-      setShowVerdict(true)
-      setShowOutput(false)
-      setShowInput(false)
-      setIndexAtWhichTestCaseFailed(0)
+      setActiveTab('verdict')
       setOutPutReceivedForFailedTestcase('')
       setPassCount(0)
       setTimeout(() => {
@@ -232,7 +216,6 @@ function CodeEditor({ testcases, id }) {
             setPassCount(prev => prev + 1)
           }
           else {
-            setIndexAtWhichTestCaseFailed(count)
             setOutPutReceivedForFailedTestcase(item)
             setResultForMySubmission(item)
 
@@ -261,27 +244,11 @@ function CodeEditor({ testcases, id }) {
     }
   }, [ResultForMySubmission]);
 
+  const handleTabChange = (newTab) => {
+    console.log("newTab = ",newTab)
+    setActiveTab(newTab);
+  };
 
-  const handleShowInput = (e) => {
-    e.preventDefault()
-    setShowInput(true)
-    setShowOutput(false)
-    setShowVerdict(false)
-  }
-
-  const handleShowOutput = (e) => {
-    e.preventDefault()
-    setShowInput(false)
-    setShowOutput(true)
-    setShowVerdict(false)
-  }
-
-  const handleShowVerdict = (e) => {
-    e.preventDefault()
-    setShowInput(false)
-    setShowOutput(false)
-    setShowVerdict(true)
-  }
 
   const PopupMessage = ({ message, show }) => {
     return (
@@ -371,18 +338,18 @@ function CodeEditor({ testcases, id }) {
         </div>
 
         {showTestCases && (
-          <div ref={testCasesRef} className=" border-2 px-4 py-4 w-full  h-[220px] mt-4 bg-slate-500   ">
+          <div ref={testCasesRef} className=" border-2 px-4 py-4 w-full  h-[220px] mt-4 bg-slate-500 ">
             <div className="tab mb-4 ">
-              <button className="tablinks mr-2 bg-slate-300 outline-none focus:outline-none focus:border-none hover:border-transparent" onClick={handleShowInput} >Input</button>
-              <button className="tablinks mr-2 bg-slate-300 focus:outline-none focus:border-none hover:border-transparent" onClick={handleShowOutput} >Output</button>
-              <button className="tablinks bg-slate-300 focus:outline-none focus:border-none hover:border-transparent" onClick={handleShowVerdict}>Verdict</button>
+              <button className={`tablinks mr-2 bg-slate-300 outline-none focus:outline-none focus:border-none hover:border-transparent `} onClick={() => handleTabChange('input')} >Input</button>
+              <button className={`tablinks mr-2 bg-slate-300 focus:outline-none focus:border-none hover:border-transparent `} onClick={() => handleTabChange('output')} >Output</button>
+              <button className={`tablinks bg-slate-300 focus:outline-none focus:border-none hover:border-transparent `} onClick={() => handleTabChange('verdict')}>Verdict</button>
             </div>
-            {showInput && (<div className="tabcontent h-[65%]">
+            {activeTab === 'input' && (<div className="tabcontent h-[65%] transition duration-300 ease-in-out transform opacity-100">
               <textarea value={Input} name="InputTestCase" id="InputTestCase" className={`w-full h-full p-2 focus:outline-none rounded-md resize-none scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300  overflow-y-scroll `} placeholder='Write the test case'
                 onChange={(e) => setInput(e.target.value)}></textarea>
             </div>)}
 
-            {showOutput && (<div className={`w-full h-[65%] p-2 bg-white focus:outline-none rounded-md resize-none scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300  overflow-y-scroll whitespace-pre-wrap `}>
+            {activeTab === 'output' && (<div className={`w-full h-[65%] p-2 bg-white focus:outline-none rounded-md resize-none scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300  overflow-y-scroll whitespace-pre-wrap  transition duration-300 ease-in-out transform opacity-100`}>
               {Output.message !== 'Successful Submission' ? (<div><p className='font-bold text-red-700'>{Output.message}</p>
                 <div className='whitespace-pre-wrap'>{Output.OutputReceived}</div>
               </div>) : (
@@ -391,7 +358,7 @@ function CodeEditor({ testcases, id }) {
 
             </div>)}
 
-            {showVerdict && (<div className={`w-full h-[65%] p-2 pl-0 bg-white focus:outline-none rounded-md resize-none scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300  overflow-y-scroll flex justify-center items-center`}>
+            {activeTab === 'verdict' && (<div className={`w-full h-[65%] p-2 pl-0 bg-white focus:outline-none rounded-md resize-none scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300  overflow-y-scroll flex justify-center items-center transition duration-300 ease-in-out transform opacity-100`}>
 
               {loadingTimeOut && (<ScaleLoader
                 color='yellow'
