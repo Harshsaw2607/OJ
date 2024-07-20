@@ -74,15 +74,15 @@ function Auth() {
 
 
     const [showPassword, setShowPassword] = useState(false);
-    const [eyeIcon, setEyeIcon] = useState('./public/hide.png'); // Initial image path
+    const [eyeIcon, setEyeIcon] = useState('/hide.png'); // Initial image path
 
     const togglePasswordVisibility = (e) => {
         e.preventDefault()
         setShowPassword(!showPassword);
         if (showPassword) {
-            setEyeIcon('./public/hide.png'); // Image when password is hidden
+            setEyeIcon('/hide.png'); // Image when password is hidden
         } else {
-            setEyeIcon('./public/show.png'); // Image when password is shown
+            setEyeIcon('/show.png'); // Image when password is shown
         }
     };
 

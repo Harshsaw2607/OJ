@@ -21,9 +21,9 @@ function Auth() {
     const [passwordMessage, setPasswordMessage] = useState('');
     const [confirmPasswordMessage, setconfirmPasswordMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false);
-    const [eyeIcon, setEyeIcon] = useState('./public/hide.png'); // Initial image path
+    const [eyeIcon, setEyeIcon] = useState('/hide.png'); // Initial image path
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [eyeIconForConfirmPassword, setEyeIconForConfirmPassword] = useState('./public/hide.png'); // Initial image path
+    const [eyeIconForConfirmPassword, setEyeIconForConfirmPassword] = useState('/hide.png'); // Initial image path
     const [showPopup, setShowPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState('')
     // const [clickButton,setclickButton]=useState(0)
@@ -99,9 +99,9 @@ function Auth() {
         e.preventDefault()
         setShowPassword(!showPassword);
         if (showPassword) {
-            setEyeIcon('./public/hide.png'); // Image when password is hidden
+            setEyeIcon('/hide.png'); // Image when password is hidden
         } else {
-            setEyeIcon('./public/show.png'); // Image when password is shown
+            setEyeIcon('/show.png'); // Image when password is shown
         }
     };
 
@@ -109,9 +109,9 @@ function Auth() {
         e.preventDefault()
         setShowConfirmPassword(!showConfirmPassword);
         if (showConfirmPassword) {
-            setEyeIconForConfirmPassword('./public/hide.png'); // Image when password is hidden
+            setEyeIconForConfirmPassword('/hide.png'); // Image when password is hidden
         } else {
-            setEyeIconForConfirmPassword('./public/show.png'); // Image when password is shown
+            setEyeIconForConfirmPassword('/show.png'); // Image when password is shown
         }
     };
 
