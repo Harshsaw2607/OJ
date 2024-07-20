@@ -2,8 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../Hooks/useAuth'
 import axios from 'axios'
-// const URL = "http://15.207.47.162:3000"
-const URL = "http://localhost:3000"
+const URL =process.env.VITE_BACKEND_URL
 function NavBar() {
   const location = useLocation()
   const [showUser, setShowUser] = useState(false)
