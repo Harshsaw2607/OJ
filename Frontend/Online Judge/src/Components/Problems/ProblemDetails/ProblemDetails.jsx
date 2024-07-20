@@ -21,7 +21,7 @@ function ProblemDetails() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('')
   const [isUpdateSuccessful, setIsUpdateSuccessful] = useState(false)
-  const [Delete, setDelete] = useState('../../../../public/delete.png')
+  const [Delete, setDelete] = useState('/delete.png')
   const [testcases, setTestcases] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
   const divRef = useRef()
