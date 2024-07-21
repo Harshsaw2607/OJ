@@ -12,7 +12,7 @@ DBCOnnection();
 const cors = require('cors');
 const { log } = require('console');
 
-app.use(cors({ origin:"http://localhost:5173", 
+app.use(cors({ origin:"https://codesmash.vercel.app", 
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization'
