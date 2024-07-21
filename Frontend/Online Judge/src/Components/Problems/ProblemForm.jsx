@@ -200,7 +200,7 @@ function ProblemForm() {
                 <DifficultyAndEditorial EditorialRef={EditorialRef} DifficultyRef={DifficultyRef} />
 
                 <div className='flex origin-left ml-2'>
-                    <button className='focus:border-none focus:outline-none' onClick={handleTestCase}>Add testcase</button>
+                    <button className='focus:border-none focus:outline-none bg-white' onClick={handleTestCase}>Add testcase</button>
                 </div>
 
                 <div className='mt-4 ml-2'>
