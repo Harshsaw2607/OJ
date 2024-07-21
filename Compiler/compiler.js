@@ -5,7 +5,7 @@ Port=8000
 
 const CompilerRouter = require('./Routers/CompilerRouter')
 
-app.use(cors({origin:"http://localhost:5173",
+app.use(cors({origin:"https://codesmash.vercel.app",
     credentials:true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization'
