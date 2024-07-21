@@ -215,7 +215,7 @@ function ProblemForm() {
                 {showTestcasePage && (
                     <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
                         <div className='h-[22rem] w-[35rem] bg-blue-100 rounded-md z-10 absolute shadow-2xl  p-2'>
-                            <div className='float-end'><img src="./public/cross.png" alt="" className='h-5 w-5 cursor-pointer' onClick={() => setShowTestcasePage(!showTestcasePage)} /></div>
+                            <div className='float-end'><img src="/cross.png" alt="" className='h-5 w-5 cursor-pointer' onClick={() => setShowTestcasePage(!showTestcasePage)} /></div>
                             <div className='flex justify-around'>
                                 <div className='flex flex-col'>
                                     <div className='flex flex-col items-start'>
