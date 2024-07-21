@@ -126,14 +126,14 @@ function Auth() {
 
     return (
         <>
-            <div className="h-auto w-[480px] border-black-5 shadow-xl  bg-slate-50 p-8 overflow-hidden">
+            <div className="h-auto w-[480px] border-black-5 shadow-xl bg-slate-50 p-8 overflow-hidden">
                 <div className=' text-black font-semibold m-2 text-lg '>Online Judge</div>
 
-                <form onSubmit={handleSubmit} className='flex-col items-center'>
+                <form onSubmit={handleSubmit} className='flex flex-col items-center'>
                     <div>
                         <label htmlFor="email"></label>
                         <input type="text" ref={emailRef} name="email" id="email" placeholder='Email'
-                            className=" outline-none border-[1px] border-slate-200 rounded-md m-4 p-2" style={{ width: '300px' }}
+                            className=" outline-none border-[1px] border-slate-200 rounded-md m-4 p-2" style={{width : '300px'}}
                             onFocus={() => setErrorMsgEmail('')} />
                     </div>
                     <p className='text-red-700 relative right-[6.4rem] bottom-3' style={{ fontSize: '10px' }}>{errorMsgEmail}</p>
@@ -142,11 +142,11 @@ function Auth() {
                     <div>
                         <label htmlFor="password"></label>
                         <input type={showPassword ? "text" : "password"} ref={passwordRef} name="password" id="password" placeholder='Password'
-                            className=" outline-none border-[1px] border-slate-200 rounded-md m-4  p-2 relative left-7" style={{ width: '300px' }}
+                            className=" outline-none border-[1px] border-slate-200 rounded-md m-4 p-2 relative left-7" style={{width : '300px'}}
                             onFocus={() => setErrorMsgPass('')} />
 
-                        <button className='inline relative top-1 outline-none border-none focus:outline-none focus:border-none
-                m-0 right-12 bg-white' onClick={togglePasswordVisibility}><img src={eyeIcon} alt="Icon" className=' m-0 w-5 h-5 p-0 bg-white' /></button>
+                        <button className=' inline-block relative top-1 outline-none border-none focus:outline-none focus:border-none
+                m-0 right-12 bg-white ' onClick={togglePasswordVisibility}><img src={eyeIcon} alt="Icon" className=' m-0 w-5 h-5 p-0 bg-white' /></button>
 
                         {passwordMessage && (
                             <p className='text-red-700 mb-5 relative left-12 break-normal max-w-[300px]' style={{ fontSize: '10px' }}>
