@@ -5,7 +5,7 @@ import List from '../List';
 function ProblemSet() {
   const [problems, setProblems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const problemsPerPage = 10;
+  const problemsPerPage = 15;
 
   useEffect(() => {
     fetchDatafromDatabase()
@@ -74,7 +74,7 @@ function ProblemSet() {
   };
 
   return (
-    <div className="container w-[80%] mx-auto mt-10 p-4 ml-10">
+    <div className="container mx-auto mt-10 p-4 md:w-4/5 sm:w-full sm:px-2">
       <div className="flex justify-center mb-4">
         <h2 className="text-2xl font-bold">Problems</h2>
       </div>
@@ -82,10 +82,10 @@ function ProblemSet() {
         <table className="min-w-full bg-white border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-[15px] text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-[15px] text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Difficulty
               </th>
             </tr>
@@ -94,7 +94,6 @@ function ProblemSet() {
             {currentProblems.map((problem) => (
               <List key={problem._id} ProblemName={problem.ProblemName} Difficulty={problem.Difficulty} id={problem._id} />
             ))}
-
           </tbody>
         </table>
       </div>
