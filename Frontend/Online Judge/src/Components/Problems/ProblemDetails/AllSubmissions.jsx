@@ -222,7 +222,7 @@ function AllSubmissions() {
       {DetailsFetchedSuccessfully && (
         <div className='relative top-[50px] flex flex-col justify-center items-center px-2 md:px-0'>
           <div className='font-bold relative text-center mb-5 text-xl'>All Submissions</div>
-          <div className="overflow-x-auto w-full">
+          <div className="overflow-x-auto">
             <table className="w-full bg-white border border-gray-300 text-xs sm:text-sm md:text-base">
               <thead>
                 <tr className="w-full bg-gray-100 text-gray-800">
