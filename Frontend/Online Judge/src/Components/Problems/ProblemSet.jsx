@@ -76,16 +76,16 @@ function ProblemSet() {
   return (
     <div className="container mx-auto mt-10 p-4 md:w-4/5 sm:w-full sm:px-2">
       <div className="flex justify-center mb-4">
-        <h2 className="text-2xl font-bold">Problems</h2>
+        <h2 className="text-xl md:text-2xl font-bold">Problems</h2>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-3 py-3 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-3 py-3 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Difficulty
               </th>
             </tr>
