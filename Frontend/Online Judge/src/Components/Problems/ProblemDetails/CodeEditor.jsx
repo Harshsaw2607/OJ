@@ -313,10 +313,10 @@ function CodeEditor({ testcases, id }) {
         </div>
 
         <div className='flex w-full justify-end'>
-          <button className='border-2 rounded-xl bg-slate-200 mt-3 px-8 font-bold outline-none focus:outline-none focus:border-none hover:border-transparent hover:bg-slate-300 transition-all duration-200 ease-in-out'
+          <button className='border-2 rounded-xl bg-slate-200 mt-3 px-4 md:px-8 font-bold outline-none focus:outline-none focus:border-none hover:border-transparent hover:bg-slate-300 transition-all duration-200 ease-in-out'
             onClick={toggleTestCases}>Testcases</button>
           <div className='relative' onMouseEnter={() => setHoverMessageforRun(true)}
-            onMouseLeave={() => setHoverMessageforRun(false)}><button type='submit' className={`border-2 rounded-xl bg-slate-200 mt-3 px-8 ml-3 font-bold outline-none focus:outline-none focus:border-none hover:border-transparent hover:bg-slate-300 transition-all duration-200 ease-in-out`} disabled={isButtonDisabled} onClick={handleRun}>Run</button>
+            onMouseLeave={() => setHoverMessageforRun(false)}><button type='submit' className={`border-2 rounded-xl bg-slate-200 mt-3 px-4 md:px-8 ml-3 font-bold outline-none focus:outline-none focus:border-none hover:border-transparent hover:bg-slate-300 transition-all duration-200 ease-in-out`} disabled={isButtonDisabled} onClick={handleRun}>Run</button>
             {(isButtonDisabled && hoverMessageforRun) && (
               <div className='bg-gray-200 text-black text-sm font-thin border-2 rounded-md whitespace-pre-wrap h-auto w-[14rem] px-1 transition-all duration-800 ease-in-out' style={{ position: 'absolute', right: '-50px', top: '65px' }}>
                 You need to login or sign up to Run
