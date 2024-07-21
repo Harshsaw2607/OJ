@@ -154,8 +154,8 @@ function ProblemDetails() {
 
 
   return (
-    <div ref={divRef} className='flex flex-row  mx-5   overflow-x-hidden '>
-      <div className="max-w-[42rem] min-w-[33rem] px-4 py-8 bg-white mr-2 max-h-[675px] overflow-auto">
+    <div ref={divRef} className='flex flex-col md:flex-row  mx-5   overflow-x-hidden '>
+      <div className="w-full  md:max-w-[42rem] md:min-w-[33rem] px-4 py-8 bg-white mr-2 max-h-[500px] md:max-h-[675px] overflow-auto">
 
         {isUpdateSuccessful && (
           <div className='w-[90%] bg-yellow-100 rounded-md mb-3 p-2 font-mono opacity-90'>
