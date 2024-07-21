@@ -268,7 +268,7 @@ function CodeEditor({ testcases, id }) {
 
   return (
     <div>
-      <div className=' bg-white border-2 px-4 py-8 max-w-full max-h-[675px] overflow-auto z-10'>
+      <div className=' bg-white border-2 px-4 py-8 max-w-full max-h-[675px] mt-4 md:mt-0 overflow-auto z-10'>
         <div className="relative inline-block text-left">
           {/* Dropdown button */}
           <button
