@@ -70,7 +70,9 @@ function CodeEditor({ testcases, id }) {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [activeTab,setActiveTab]  = useState('input')
   const [loading, setLoading] = useState(false)
+  const [loadingForRun, setLoadingForRun] = useState(false)
   const [loadingTimeOut, setLoadingTimeOut] = useState(true)
+  const [loadingTimeOutForRun , setLoadingTimeOutForRun] = useState(true)
   const [hoverMessageforRun, setHoverMessageforRun] = useState(false)
   const [hoverMessageforSubmit, setHoverMessageforSubmit] = useState(false)
   const [passCount, setPassCount] = useState(0)
@@ -78,6 +80,7 @@ function CodeEditor({ testcases, id }) {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage,setPopupMessage] = useState('')
   const testCasesRef = useRef();
+  const divRef = useRef(null)
   const { user } = useAuth()
 
   const languageRef = useRef(language); // Create a ref to store the latest language value
@@ -101,6 +104,21 @@ function CodeEditor({ testcases, id }) {
       return () => clearTimeout(timer);
     }
   }, [loading])
+
+  useEffect(() => {
+    if (loadingForRun) {
+      const timer = setTimeout(() => {
+        setLoadingTimeOutForRun(false);
+        if (divRef.current) {
+          divRef.current.style.height = '0';
+          divRef.current.style.width = '0';
+        }
+      }, 10000); // 10 seconds
+
+      // Clean up the timer when the component unmounts or when loading changes
+      return () => clearTimeout(timer);
+    }
+  }, [loadingForRun])
 
 
   const toggleDropdown = () => {
@@ -158,8 +176,11 @@ function CodeEditor({ testcases, id }) {
     }
 
     else {
+      setLoadingTimeOutForRun(true)
       setOutput('')
       setShowTestCases(true)
+      setActiveTab('output')
+      setLoadingForRun(true)
       setTimeout(() => {
         if (testCasesRef.current) {
           testCasesRef.current.scrollIntoView({
@@ -173,7 +194,11 @@ function CodeEditor({ testcases, id }) {
         const message = data.data.output.message
         const OutputReceived = data.data.output.output
         setOutput({ message, OutputReceived })
-        setActiveTab('output')
+        setLoadingForRun(false)
+        if (divRef.current) {
+          divRef.current.style.height = '0';
+          divRef.current.style.width = '0';
+        }
       })
     }
 
@@ -349,7 +374,16 @@ function CodeEditor({ testcases, id }) {
                 onChange={(e) => setInput(e.target.value)}></textarea>
             </div>)}
 
-            {activeTab === 'output' && (<div className={`w-full h-[65%] p-2 bg-white focus:outline-none rounded-md resize-none scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300  overflow-y-scroll whitespace-pre-wrap  transition duration-300 ease-in-out transform opacity-100`}>
+            {activeTab === 'output' && (<div className={`w-full h-[65%] p-2 bg-white focus:outline-none rounded-md resize-none scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300  overflow-y-scroll  whitespace-pre-wrap  transition duration-300 ease-in-out transform opacity-100`}>
+              
+              {loadingTimeOutForRun && (<div ref={divRef} className={` w-[100%] h-[100%] flex justify-center items-center`}><ScaleLoader
+                color='yellow'
+                loading={loadingForRun}
+                size={150}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              /></div>)}
+
               {Output.message !== 'Successful Submission' ? (<div><p className='font-bold text-red-700'>{Output.message}</p>
                 <div className='whitespace-pre-wrap'>{Output.OutputReceived}</div>
               </div>) : (
@@ -363,7 +397,6 @@ function CodeEditor({ testcases, id }) {
               {loadingTimeOut && (<ScaleLoader
                 color='yellow'
                 loading={loading}
-                // cssOverride={override}
                 size={150}
                 aria-label="Loading Spinner"
                 data-testid="loader"
