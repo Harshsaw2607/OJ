@@ -4,10 +4,14 @@ import { useNavigate,useLocation } from 'react-router-dom';
 import DifficultyAndEditorial from '../DifficultyAndEditorial'
 import { uploadDataProblem } from '../../api';
 
+import ReactMarkdownEditorLite from 'react-markdown-editor-lite';
+import 'react-markdown-editor-lite/lib/index.css'; // Add this import to include the default styles
+import {marked} from 'marked'; // Import marked
 
 
 function ProblemForm() {
     const ProblemNameRef = useRef()
+    const [problemStatement,setProblemStatement] = useState('')
     const ProblemStatementRef = useRef()
     const EditorialRef = useRef()
     const DifficultyRef = useRef()
@@ -32,9 +36,13 @@ function ProblemForm() {
     const handleSubmit = (e) => {
 
         e.preventDefault();
+        if (ProblemStatementRef.current) {
+            const content = ProblemStatementRef.current.getMdValue();
+            console.log("content =", content); // You can save this content to the database
+          }
         const Data = {
             ProblemName: ProblemNameRef.current.value,
-            ProblemStatement: ProblemStatementRef.current.value,
+            ProblemStatement: ProblemStatementRef.current.getMdValue(),
             Editorial: EditorialRef.current.value,
             Difficulty: DifficultyRef.current.value,
             Testcase: TestCase
@@ -194,7 +202,14 @@ function ProblemForm() {
                 <div className='flex mb-3 flex-col'>
                     <label htmlFor="ProblemStatement" className="mr-2  text-lg relative left-[-13.9rem]" style={{ fontFamily: 'Lato', fontWeight: 800, fontStyle: 'bold' }}> Problem Statement : </label>
                     <br />
-                    <textarea name="ProblemStatement" ref={ProblemStatementRef} id="ProblemStatement" rows={10} cols={5} className='mx-5 mb-5 w-[30rem] p-2 outline-none focus:outline-none resize-none overflow-auto bg-slate-50'></textarea>
+                    <ReactMarkdownEditorLite
+                        ref={ProblemStatementRef}
+                        value={problemStatement}
+                        style={{ height: '300px' }}
+                        onChange={({ text }) => setProblemStatement(text)}
+                        renderHTML={text => marked(text)} // Use marked to render Markdown
+                    />
+                    {/* <textarea name="ProblemStatement" ref={ProblemStatementRef} id="ProblemStatement" rows={10} cols={5} className='mx-5 mb-5 w-[30rem] p-2 outline-none focus:outline-none resize-none overflow-auto bg-slate-50'></textarea> */}
                 </div>
 
                 <DifficultyAndEditorial EditorialRef={EditorialRef} DifficultyRef={DifficultyRef} />
