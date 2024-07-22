@@ -1,17 +1,17 @@
 import { useRef } from 'react';
 import React, { useState, useEffect } from 'react';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import DifficultyAndEditorial from '../DifficultyAndEditorial'
 import { uploadDataProblem } from '../../api';
 
 import ReactMarkdownEditorLite from 'react-markdown-editor-lite';
-import 'react-markdown-editor-lite/lib/index.css'; // Add this import to include the default styles
-import {marked} from 'marked'; // Import marked
+import 'react-markdown-editor-lite/lib/index.css'; 
+import { marked } from 'marked'; 
 
 
 function ProblemForm() {
     const ProblemNameRef = useRef()
-    const [problemStatement,setProblemStatement] = useState('')
+    const [problemStatement, setProblemStatement] = useState('')
     const ProblemStatementRef = useRef()
     const EditorialRef = useRef()
     const DifficultyRef = useRef()
@@ -36,10 +36,6 @@ function ProblemForm() {
     const handleSubmit = (e) => {
 
         e.preventDefault();
-        if (ProblemStatementRef.current) {
-            const content = ProblemStatementRef.current.getMdValue();
-            console.log("content =", content); // You can save this content to the database
-          }
         const Data = {
             ProblemName: ProblemNameRef.current.value,
             ProblemStatement: ProblemStatementRef.current.getMdValue(),
@@ -49,7 +45,6 @@ function ProblemForm() {
         }
 
         uploadDataProblem(Data).then(response => {
-            // console.log("New Response ",response)
             if (response.success) {
                 Popup("Updated Successfully")
                 setTimeout(() => {
@@ -97,8 +92,7 @@ function ProblemForm() {
         setShowPopup(true);
         setTimeout(() => {
             setShowPopup(false)
-            // window.location.reload()
-        }, 2000); // Hide after 2 seconds
+        }, 2000); 
     }
 
 
@@ -209,7 +203,7 @@ function ProblemForm() {
                         onChange={({ text }) => setProblemStatement(text)}
                         renderHTML={text => marked(text)} // Use marked to render Markdown
                     />
-                    {/* <textarea name="ProblemStatement" ref={ProblemStatementRef} id="ProblemStatement" rows={10} cols={5} className='mx-5 mb-5 w-[30rem] p-2 outline-none focus:outline-none resize-none overflow-auto bg-slate-50'></textarea> */}
+
                 </div>
 
                 <DifficultyAndEditorial EditorialRef={EditorialRef} DifficultyRef={DifficultyRef} />
