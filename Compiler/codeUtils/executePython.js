@@ -50,6 +50,10 @@ const executePython = async (filePath, inputPath) => {
             output: error.message
         };
         return response;
+    } finally {
+        // Cleanup files
+        if (inputPath && fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+        
     }
 };
 

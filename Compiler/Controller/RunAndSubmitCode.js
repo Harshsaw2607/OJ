@@ -4,6 +4,7 @@ const executeCpp = require('../codeUtils/executeCpp.js')
 const executeJS = require('../codeUtils/executeJs.js')
 const executeJava = require('../codeUtils/executeJava.js')
 const executePython = require('../codeUtils/executePython.js')
+const fs=require('fs')
 
 const runCode = async (language, filePath, inputPath) => {
     let output;
@@ -40,7 +41,7 @@ const RunCodeFile = async (req, res) => {
         const filePath = await generateFile(code, language);
         const inputPath = await generateInputFile(Input);
         const output = await runCode(language, filePath, inputPath);
-
+        if (filePath && fs.existsSync(filePath)) fs.unlinkSync(filePath);
         return res.status(200).json({ output });
     } catch (error) {
         console.error('Error in RunCodeFile:', error);
@@ -116,6 +117,8 @@ const SubmitCodeFile = async (req, res) => {
                 }
             }
         }
+        
+        if (filePath && fs.existsSync(filePath)) fs.unlinkSync(filePath);
 
         return res.status(200).json({ result });
 

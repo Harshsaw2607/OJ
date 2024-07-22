@@ -71,6 +71,7 @@ const executeJava = async (filePath, inputPath) => {
             message: 'Successful Submission',
             output: output,
         };
+        fs.unlinkSync(outputDir)
         return response;
     } catch (error) {
         if (error.type === 'compilation') {
@@ -95,6 +96,10 @@ const executeJava = async (filePath, inputPath) => {
             };
             return response;
         }
+    } finally {
+        // Cleanup files
+        if (inputPath && fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+        
     }
 };
 

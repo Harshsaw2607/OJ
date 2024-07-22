@@ -62,6 +62,10 @@ const executeJS = async (filePath, inputPath) => {
             };
             return response;
         }
+    } finally {
+        // Cleanup files
+        if (inputPath && fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+        
     }
 };
 

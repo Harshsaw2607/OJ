@@ -70,6 +70,7 @@ const executeCpp = async (filePath, inputPath) => {
             output  : output
 
         }
+        fs.unlinkSync(outputFilePath)
         return response
     } catch (error) {
         if (error.type === 'compilation') {
@@ -94,6 +95,10 @@ const executeCpp = async (filePath, inputPath) => {
             }
             return response
         }
+    } finally {
+        // Cleanup files
+        if (inputPath && fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+        
     }
 };
 
