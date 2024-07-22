@@ -63,14 +63,12 @@ function Home() {
               <ul>
                 <li><Link to="/" className="text-gray-400 hover:text-white transition duration-300">Home</Link></li>
                 <li><Link to="/problemSet" className="text-gray-400 hover:text-white transition duration-300">Problems</Link></li>
-                {/* <li><Link to="/submit" className="text-gray-400 hover:text-white transition duration-300">Submit Solution</Link></li> */}
-                {/* <li><Link to="/rankings" className="text-gray-400 hover:text-white transition duration-300">Rankings</Link></li> */}
               </ul>
             </div>
             {/* Footer Column 3 */}
             <div>
               <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
-              <p className="text-gray-400">Email: harshsaw267@gmail.com</p>
+              <p className="text-gray-400">Email: harshsaw2607@gmail.com</p>
               <p className="text-gray-400">Phone: +917481856319</p>
             </div>
           </div>
