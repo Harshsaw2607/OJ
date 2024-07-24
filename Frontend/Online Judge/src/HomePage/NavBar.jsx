@@ -90,7 +90,7 @@ function NavBar() {
 
   return (
     <div className="flex justify-between items-center w-full bg-slate-800 border-b-2 border-t-4 h-[3rem] p-4">
-      <div className="flex justify-between items-center w-full md:w-[60%]">
+      <div className="flex justify-between items-center w-full md:w-[80%]  lg:w-[70%] ">
         <p className="text-white">CodeSmash</p>
         <div className="md:hidden">
           <div
@@ -100,7 +100,7 @@ function NavBar() {
             {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </div>
         </div>
-        <ul className="hidden md:flex gap-5 mb-2 font-semibold justify-center items-center">
+        <ul className="hidden md:flex gap-5  mb-2 font-semibold justify-center items-center">
           <li>
             <NavLink
               to="/"
@@ -133,6 +133,30 @@ function NavBar() {
           </li>
           <li>
             <NavLink
+              to="/feedback"
+              state={{ from: location }}
+              replace
+              className={({ isActive }) =>
+                `${isActive ? 'text-orange-400' : 'text-gray-500'} cursor-pointer`
+              }
+            >
+              Feedback
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/feedbackResponse"
+              state={{ from: location }}
+              replace
+              className={({ isActive }) =>
+                `${isActive ? 'text-orange-400' : 'text-gray-500'} cursor-pointer ${isAdmin ? 'block' : 'hidden'}`
+              }
+            >
+              Feedback Response
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="/problemForm"
               state={{ from: location }}
               replace
@@ -143,6 +167,7 @@ function NavBar() {
               Add Problem
             </NavLink>
           </li>
+          
         </ul>
       </div>
 
@@ -244,6 +269,28 @@ function NavBar() {
                 onClick={toggleMobileMenu}
               >
                 Problemset
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/feedback"
+                className={({ isActive }) =>
+                  `${isActive ? 'text-orange-400' : 'text-gray-500'} cursor-pointer`
+                }
+                onClick={toggleMobileMenu}
+              >
+                Feedback
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/feedbackResponse"
+                className={({ isActive }) =>
+                  `${isActive ? 'text-orange-400' : 'text-gray-500'} cursor-pointer`
+                }
+                onClick={toggleMobileMenu}
+              >
+                Feedback Response
               </NavLink>
             </li>
             {isAdmin && (
