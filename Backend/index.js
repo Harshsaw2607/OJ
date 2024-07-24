@@ -11,6 +11,7 @@ DBCOnnection();
 
 const cors = require('cors');
 const { log } = require('console');
+const FeedbackRouter = require('./Routers/FeedbackRouter.js');
 
 app.use(cors({ origin:"https://codesmash.vercel.app", 
     credentials: true,
@@ -26,6 +27,7 @@ app.use(cookieParser())
 
 app.use('/api/auth/', AuthRouter)
 app.use('/api/Crud/', CRUDRouter)
+app.use('/api/feedback',FeedbackRouter)
 
 app.get('/', (req, res) => {
     res.send("HELLO")
