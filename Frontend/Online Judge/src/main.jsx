@@ -17,6 +17,8 @@ import Unauthorised from './Unauthorised.jsx'
 import RequireAuthorisation from './RequireAuthorisation.jsx'
 import ContestPage from './Components/Problems/ContestPage.jsx'
 import { Analytics } from "@vercel/analytics/react"
+import FeedbackForm from './Components/FeedbackForm.jsx'
+import AdminFeedback from './Components/FeedbackResponse.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +30,8 @@ const router = createBrowserRouter(
         <Route path='Editorial/:id' element={<Editorial />} />
         <Route path='MySubmission/:id' element={<MySubmissions />} />
         <Route path='AllSubmission/:id' element={<AllSubmissions />} />
+        <Route path='feedback' element={<FeedbackForm/>}/>
+        <Route path='feedbackResponse' element = {<AdminFeedback/>}/>
         <Route path='' element={<Home />} />
       </Route>
       <Route path='/' element={<RequireAuthorisation allowedRoles={[1984]} />}>
