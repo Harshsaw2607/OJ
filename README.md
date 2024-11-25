@@ -105,6 +105,6 @@ Features:
 3. Start the development server:
     ```bash
     npm start
-4. Open your browser and visit
+4. Open your browser and visit:
    ```arduino
    http://localhost:3000
